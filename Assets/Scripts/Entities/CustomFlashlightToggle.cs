@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FlashlightToggle : MonoBehaviour
+public class CustomFlashlightToggle : MonoBehaviour
 {
     public GameObject lightGO; //light gameObject to work with
     private bool isOn = true; //is flashlight on or off?
