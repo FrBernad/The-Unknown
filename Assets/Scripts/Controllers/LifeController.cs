@@ -2,13 +2,14 @@ using System;
 using Managers;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Controllers
 {
     public class LifeController : MonoBehaviour
     {
         [SerializeField] private float _maxStamina = 100;
         [SerializeField] private float _currentStamina;
 
+        public float MaxStamina => _maxStamina;
         public float CurrentStamina => _currentStamina;
 
         public void Start()
@@ -42,6 +43,7 @@ namespace DefaultNamespace
 
         public void UI_Stamina_Updater()
         {
+            Debug.Log(_currentStamina);
             EventManager.instance.StaminaChange(_currentStamina / 100);
         }
     }

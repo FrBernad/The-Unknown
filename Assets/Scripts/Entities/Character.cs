@@ -6,6 +6,7 @@ namespace Entities
     public class Character : MonoBehaviour
     {
         private MovementController _movementController;
+        private LifeController _lifeController;
 
         [SerializeField] private KeyCode moveForward = KeyCode.W;
         [SerializeField] private KeyCode moveBackward = KeyCode.S;
@@ -20,6 +21,7 @@ namespace Entities
         private void Start()
         {
             _movementController = GetComponent<MovementController>();
+            _lifeController = GetComponent<LifeController>();
         }
 
         private void Update()
@@ -46,9 +48,24 @@ namespace Entities
                 _movementController.Move(Vector3.right);
             }
 
-            if (Input.GetKeyDown(sprint))
+            if (Input.GetKey(sprint))
             {
-                _movementController.Sprint(true);
+                if (_lifeController.CurrentStamina > 0)
+                {
+                    _movementController.Sprint(true);
+                    _lifeController.decreaseStamina(0.3f);
+                }
+                else
+                {
+                    _movementController.Sprint(false);
+                }
+            }
+            else
+            {
+                if (_lifeController.CurrentStamina < _lifeController.MaxStamina)
+                {
+                    _lifeController.increaseStamina(0.5f);
+                }
             }
 
             if (Input.GetKeyUp(sprint))
