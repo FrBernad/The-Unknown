@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace;
 using Interfaces;
 using UnityEngine;
 
@@ -19,6 +20,11 @@ namespace Controllers
         {
             float auxSpeed = _sprint ? speed * 2 : speed;
             transform.Translate(direction * (auxSpeed * Time.deltaTime));
+            if (_sprint)
+            {
+                // GetComponent<LifeController>().decreaseStamina();
+            }
+
         }
 
         public void Rotate(Vector3 direction)
