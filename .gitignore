@@ -133,3 +133,8 @@ nb-configuration.xml
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+
+*.asset
+
+Assets/*
+!Assets/Scripts
