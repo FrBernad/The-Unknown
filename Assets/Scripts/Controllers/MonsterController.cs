@@ -8,7 +8,6 @@ public class MonsterController : MonoBehaviour
     private NavMeshAgent _agent;
     private Transform _objective;
     private AudioSource _nearbyAudioSource;
-    [SerializeField] private AudioClip _nearbyAudioClip;
 
     private void Awake()
     {

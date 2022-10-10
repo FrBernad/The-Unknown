@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _monster;
     [SerializeField] private GameObject _player;
-    [SerializeField] private List<Transform> _spawnPoints;
+    [SerializeField] private List<Transform> _entitiesSpawnPoints;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _monsterSpawnClip;
 
@@ -38,21 +38,21 @@ public class GameManager : MonoBehaviour
 
     private void SetSpawnPoints()
     {
-        GameObject spawnPoints = GameObject.Find("SpawnPoints");
+        GameObject spawnPoints = GameObject.Find("EntitiesSpawnPoints");
         int totalSpawnPoints = spawnPoints.transform.childCount;
 
-        _spawnPoints = new List<Transform>(totalSpawnPoints);
+        _entitiesSpawnPoints = new List<Transform>(totalSpawnPoints);
 
         for (int i = 0; i < totalSpawnPoints; i++)
         {
-            _spawnPoints.Add(spawnPoints.transform.GetChild(i));
+            _entitiesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
         }
     }
 
     private void SetSpawnPosition(GameObject obj)
     {
-        int spawnPoint = Random.Range(0, _spawnPoints.Count);
-        obj.transform.position = _spawnPoints[spawnPoint].position;
+        int spawnPoint = Random.Range(0, _entitiesSpawnPoints.Count);
+        obj.transform.position = _entitiesSpawnPoints[spawnPoint].position;
     }
 
     public GameObject SpawnMonster()
