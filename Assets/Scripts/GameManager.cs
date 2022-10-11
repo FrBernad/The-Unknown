@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip _monsterSpawnClip;
 
     [SerializeField] private int _monsterRespawnTime = 10;
-    [SerializeField] private int _monsterLifeTime = 10;
+    [SerializeField] private int _monsterLifeTime = 30;
 
     private void Start()
     {

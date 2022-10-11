@@ -19,10 +19,12 @@ namespace DefaultNamespace
         private void Awake()
         {
             _isVictory = GlobalData.instance.IsVictory;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             _message = _isVictory ? "You survive" : "You die";
             AudioSource audioSource = GetComponent<AudioSource>();
             audioSource.clip = _isVictory ? _victoryClip : _defeatClip;
-            audioSource.loop = true;
+            audioSource.loop = false;
             audioSource.playOnAwake = true;
             audioSource.Play();
         }
