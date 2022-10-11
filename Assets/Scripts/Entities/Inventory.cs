@@ -10,6 +10,8 @@ public class Inventory : MonoBehaviour
     public int CurrentItems => _currentItems;
     private int _currentItems = 0;
 
+    private bool _inventoryIsFull = false;
+
     private void Start()
     {
         UI_Inventory_Updater();
@@ -20,6 +22,11 @@ public class Inventory : MonoBehaviour
         _currentItems++;
         //Llamo al método que dispara el evento
         UI_Inventory_Updater();
+    }
+
+    public bool InventoryIsFull()
+    {
+        return _currentItems == _maxItems;
     }
 
     private void UI_Inventory_Updater()

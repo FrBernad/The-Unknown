@@ -18,16 +18,16 @@ namespace Managers
 
         #endregion
 
-        // #region GAME_OVER_EVENTS
-        //
-        // public event Action<bool> OnGameOver;
-        //
-        // public void EventGameOver(bool isVictory)
-        // {
-        //     if (OnGameOver != null) OnGameOver(isVictory);
-        // }
-        //
-        // #endregion
+        #region GAME_OVER_EVENTS
+
+        public event Action<bool> OnGameOver;
+
+        public void GameOver(bool isVictory)
+        {
+            if (OnGameOver != null) OnGameOver(isVictory);
+        }
+
+        #endregion
 
         #region UI_EVENTS
 
@@ -36,6 +36,7 @@ namespace Managers
         public event Action<float> OnStaminaChange;
 
         public event Action<bool, string> OnUIPanelUpdate;
+
 
         // Método de activación del evento
         public void InventoryChange(int currentItems, int maxItems)
@@ -51,7 +52,7 @@ namespace Managers
 
         public void UIPanelUpdate(bool show, string message)
         {
-            if (OnUIPanelUpdate != null) OnUIPanelUpdate(show,message);
+            if (OnUIPanelUpdate != null) OnUIPanelUpdate(show, message);
         }
 
         #endregion

@@ -2,12 +2,20 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIButtonLogic : MonoBehaviour
+public class UIScenesTransition : MonoBehaviour
 {
+    static public UIScenesTransition instance;
+
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject optionsMenu;
     [SerializeField] private GameObject informationMenu;
     private GameObject _currentMenu;
+
+    private void Awake()
+    {
+        if (instance != null) Destroy(this.gameObject);
+        instance = this;
+    }
 
     private void Start()
     {
@@ -46,6 +54,11 @@ public class UIButtonLogic : MonoBehaviour
         _currentMenu = menuObject;
         mainMenu.SetActive(false);
         _currentMenu.SetActive(true);
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene("Game Over");
     }
 
     public void CloseGame() => Application.Quit();

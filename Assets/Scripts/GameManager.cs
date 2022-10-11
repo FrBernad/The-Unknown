@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
         SetSpawnPoints();
         // SetSpawnPosition(_player);
         StartCoroutine(MonsterLifecycle());
+        EventManager.instance.OnGameOver += GameOver;
         // StartCoroutine(DisplayInitialMessage());
     }
 
@@ -72,6 +73,11 @@ public class GameManager : MonoBehaviour
         return monster;
     }
 
+    public void GameOver(bool isVictory)
+    {
+        GlobalData.instance.SetVictoryField(isVictory);
+        UIScenesTransition.instance.GameOver();
+    }
     //     public void Botones(bool eleccion)
     // {
     //     if (eleccion == true)

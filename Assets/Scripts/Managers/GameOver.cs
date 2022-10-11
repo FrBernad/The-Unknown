@@ -1,4 +1,5 @@
 using System;
+using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ namespace DefaultNamespace
 
         private void Awake()
         {
+            _isVictory = GlobalData.instance.IsVictory;
+            _message = _isVictory ? "You survive" : "You die";
             AudioSource audioSource = GetComponent<AudioSource>();
             audioSource.clip = _isVictory ? _victoryClip : _defeatClip;
             audioSource.loop = true;

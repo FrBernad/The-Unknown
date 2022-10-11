@@ -17,8 +17,6 @@ namespace Entities
 
         [SerializeField] private KeyCode sprint = KeyCode.LeftShift;
 
-        [SerializeField] private KeyCode shoot = KeyCode.Mouse0;
-        [SerializeField] private KeyCode reload = KeyCode.R;
         [SerializeField] private KeyCode grab = KeyCode.F;
 
         private Item _item = null;
@@ -99,6 +97,21 @@ namespace Entities
                 _item = collision.GetComponent<Item>();
                 CollisionWithItem(true, _item);
             }
+            else if (collision.gameObject.CompareTag("Boat"))
+            {
+                if (_inventory.InventoryIsFull())
+                {
+                    EventManager.instance.GameOver(true);
+                }
+                else
+                {
+                    MissingNotes(true);
+                }
+            }
+            else if (collision.gameObject.CompareTag("Monster"))
+            {
+                EventManager.instance.GameOver(false);
+            }
         }
 
         private void OnTriggerExit(Collider collision)
@@ -107,18 +120,28 @@ namespace Entities
             {
                 CollisionWithItem(false, null);
             }
+            else if (collision.gameObject.CompareTag("Boat"))
+            {
+                MissingNotes(false);
+            }
         }
 
         private void CollisionWithItem(bool isColliding, Item item)
         {
             _isCollidingWithItem = isColliding;
             _item = item;
-            UpdateUIItemCollision(isColliding);
+            string message = _isCollidingWithItem ? "Press F to grab" : "";
+            UpdateUIPanel(isColliding, message);
         }
 
-        private void UpdateUIItemCollision(bool show)
+        private void MissingNotes(bool show)
         {
-            string message = show ? "Press F to grab" : "";
+            string message = show ? "You must collect all notes" : "";
+            UpdateUIPanel(show, message);
+        }
+
+        private void UpdateUIPanel(bool show, string message)
+        {
             EventManager.instance.UIPanelUpdate(show, message);
         }
     }
