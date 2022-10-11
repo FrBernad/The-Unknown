@@ -8,41 +8,62 @@ using SystemRandom = System.Random;
 
 public class NotesSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject _cubePrefab;
-    [SerializeField] private List<GameObject> _spawnPoints;
+    private Dictionary<string, int> _notesAmountPerZone = new Dictionary<string, int>
+    {
+        { "Lighthouse", 1 },
+        { "House", 1 },
+        { "BackLeft", 1 },
+        { "Center", 3 },
+        { "Right", 2 },
+    };
 
-    [SerializeField] private int _totalNotes = 4;
-
+    private Dictionary<string, List<GameObject>> _notesPerZone = new Dictionary<string, List<GameObject>>
+    {
+        { "Lighthouse", new List<GameObject>() },
+        { "House", new List<GameObject>() },
+        { "BackLeft", new List<GameObject>() },
+        { "Center", new List<GameObject>() },
+        { "Right", new List<GameObject>() },
+    };
 
     private void Awake()
     {
-        SetSpawnPoints();
+        SetAndDeactivateNotes();
     }
 
     private void Start()
     {
-        for (var i = 0; i < _totalNotes; i++)
+        ActivateRandomNotes();
+    }
+
+    private void SetAndDeactivateNotes()
+    {
+        GameObject spawnPoints = GameObject.Find("NotesSpawnPoints");
+
+        foreach (Transform zone in spawnPoints.transform)
         {
-            var index = Random.Range(0, _spawnPoints.Count);
-            _spawnPoints.RemoveAt(index);
+            foreach (Transform point in zone)
+            {
+                GameObject obj = point.gameObject;
+                
+                obj.SetActive(false);
+                _notesPerZone[zone.name].Add(obj);
+            }
         }
     }
 
-    private void SetSpawnPoints()
+    private void ActivateRandomNotes()
     {
-        GameObject lightHousePoints = GameObject.Find("NotesSpawnPoints");
-        GameObject housePoints = GameObject.Find("NotesSpawnPoints");
-        GameObject backLeftPoints = GameObject.Find("NotesSpawnPoints");
-        GameObject centerPoints = GameObject.Find("NotesSpawnPoints");
-        GameObject rightPoints = GameObject.Find("NotesSpawnPoints");
-
-        int totalSpawnPoints = spawnPoints.transform.childCount;
-
-        _spawnPoints = new List<Transform>(totalSpawnPoints);
-
-        for (int i = 0; i < totalSpawnPoints; i++)
+        foreach (KeyValuePair<string, int> zone in _notesAmountPerZone)
         {
-            _spawnPoints.Add(spawnPoints.transform.GetChild(i));
+            for (int i = 0; i < zone.Value; i++)
+            {
+                int count = _notesPerZone[zone.Key].Count;
+                List<GameObject> notes = _notesPerZone[zone.Key];
+                int randomNote = Random.Range(0, count);
+                notes[randomNote].SetActive(true);
+                notes.RemoveAt(randomNote);
+            }
         }
     }
 }
