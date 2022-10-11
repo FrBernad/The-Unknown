@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Managers;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Note : MonoBehaviour
 {
-    public void PickUpItem()
+    public void Pickup()
     {
         Destroy(gameObject);
     }

@@ -45,7 +45,7 @@ public class NotesSpawner : MonoBehaviour
             foreach (Transform point in zone)
             {
                 GameObject obj = point.gameObject;
-                
+
                 obj.SetActive(false);
                 _notesPerZone[zone.name].Add(obj);
             }

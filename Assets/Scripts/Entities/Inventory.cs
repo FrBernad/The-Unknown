@@ -6,11 +6,9 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public int MaxItems => _maxItems;
-    [SerializeField] private int _maxItems;
+    [SerializeField] private int _maxItems = 8;
     public int CurrentItems => _currentItems;
     private int _currentItems = 0;
-
-    private bool _inventoryIsFull = false;
 
     private void Start()
     {
@@ -24,7 +22,7 @@ public class Inventory : MonoBehaviour
         UI_Inventory_Updater();
     }
 
-    public bool InventoryIsFull()
+    public bool IsFull()
     {
         return _currentItems == _maxItems;
     }

@@ -25,7 +25,6 @@ namespace Managers
         public void GameOver(bool isVictory)
         {
             if (OnGameOver != null) OnGameOver(isVictory);
-
         }
 
         #endregion
@@ -36,7 +35,7 @@ namespace Managers
         public event Action<int, int> OnInventoryChange;
         public event Action<float> OnStaminaChange;
 
-        public event Action<bool, string> OnUIPanelUpdate;
+        public event Action<string> OnUIPanelUpdate;
 
 
         // Método de activación del evento
@@ -51,9 +50,9 @@ namespace Managers
             if (OnStaminaChange != null) OnStaminaChange(currentStamina);
         }
 
-        public void UIPanelUpdate(bool show, string message)
+        public void UIPanelUpdate(string message)
         {
-            if (OnUIPanelUpdate != null) OnUIPanelUpdate(show, message);
+            if (OnUIPanelUpdate != null) OnUIPanelUpdate(message);
         }
 
         #endregion

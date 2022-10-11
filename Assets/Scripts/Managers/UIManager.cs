@@ -14,30 +14,30 @@ namespace Managers
 
         private void Awake()
         {
-            ShowActionPanel(false, "");
+            OnUIPanelUpdate(null);
         }
 
         private void Start()
         {
             // Realizo la suscripción al evento con el método que se va a suscribir
-            EventManager.instance.OnInventoryChange += UpdateInventoryChange;
-            EventManager.instance.OnStaminaChange += UpdateStaminaChange;
-            EventManager.instance.OnUIPanelUpdate += ShowActionPanel;
+            EventManager.instance.OnInventoryChange += OnInventoryChange;
+            EventManager.instance.OnStaminaChange += OnStaminaChange;
+            EventManager.instance.OnUIPanelUpdate += OnUIPanelUpdate;
         }
 
-        private void UpdateInventoryChange(int currentItems, int maxItems)
+        private void OnInventoryChange(int currentItems, int maxItems)
         {
             _inventoryItems.text = $"{currentItems} / {maxItems}";
         }
 
-        private void UpdateStaminaChange(float currentStamina)
+        private void OnStaminaChange(float currentStamina)
         {
             _staminaBar.fillAmount = currentStamina;
         }
 
-        private void ShowActionPanel(bool show, string message)
+        private void OnUIPanelUpdate(string message)
         {
-            _messagePanel.SetActive(show);
+            _messagePanel.SetActive(message != null);
             _panelText.text = message;
         }
     }

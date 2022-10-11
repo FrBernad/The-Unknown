@@ -1,33 +1,30 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
-    [SerializeField] private GameObject _light;
+    private Light _light;
     private bool isOn = true;
 
-    [SerializeField] private AudioSource _audioSource;
+    private AudioSource _audioSource;
 
     void Start()
     {
-        _light = GameObject.Find("LightOuter");
-        _light.SetActive(isOn);
+        _light = gameObject.GetComponentInChildren<Light>(true);
+        _light.gameObject.SetActive(isOn);
+
+        _audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-    void Update()
+    public void Switch()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            isOn = !isOn;
-            if (isOn)
-            {
-                _light.SetActive(true);
-                _audioSource.Play();
-            }
-            else
-            {
-                _light.SetActive(false);
-                _audioSource.Play();
-            }
-        }
+        isOn = !isOn;
+        _light.gameObject.SetActive(isOn);
+        _audioSource.Play();
+    }
+
+    public void Pickup()
+    {
+        Destroy(gameObject);
     }
 }

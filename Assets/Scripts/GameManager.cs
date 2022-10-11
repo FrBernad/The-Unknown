@@ -25,9 +25,9 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator<WaitForSeconds> DisplayInitialMessage()
     {
-        EventManager.instance.UIPanelUpdate(true, "Grab all the notes and \n return to the boat");
+        EventManager.instance.UIPanelUpdate("Grab all the notes and \n return to the boat");
         yield return new WaitForSeconds(2);
-        EventManager.instance.UIPanelUpdate(false, "");
+        EventManager.instance.UIPanelUpdate(null);
     }
 
     private IEnumerator<WaitForSeconds> MonsterLifecycle()
@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
         _audioSource.PlayOneShot(_monsterSpawnClip);
         return monster;
     }
+
     public void GameOver(bool isVictory)
     {
         GlobalData.instance.SetVictoryField(isVictory);
