@@ -5,7 +5,6 @@ namespace Managers
 {
     public class EventManager : MonoBehaviour
     {
-        
         public static EventManager instance;
 
 
@@ -36,6 +35,8 @@ namespace Managers
         public event Action<int, int> OnInventoryChange;
         public event Action<float> OnStaminaChange;
 
+        public event Action<bool> OnItemInventoryCollision;
+
         // Método de activación del evento
         public void InventoryChange(int currentItems, int maxItems)
         {
@@ -46,6 +47,11 @@ namespace Managers
         public void StaminaChange(float currentStamina)
         {
             if (OnStaminaChange != null) OnStaminaChange(currentStamina);
+        }
+
+        public void ItemInventoryCollision(bool show)
+        {
+            if (OnItemInventoryCollision != null) OnItemInventoryCollision(show);
         }
 
         #endregion
