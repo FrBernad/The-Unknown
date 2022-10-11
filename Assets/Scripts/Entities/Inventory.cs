@@ -6,7 +6,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public int MaxItems => _maxItems;
-    [SerializeField] private int _maxItems = 8;
+    private int _maxItems = 8;
     public int CurrentItems => _currentItems;
     private int _currentItems = 0;
 

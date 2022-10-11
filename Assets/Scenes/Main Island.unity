@@ -681,6 +681,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 4503087251848838447, guid: 4405a49d85cdc4bb4917be8b58edbbd8, type: 3}
+      propertyPath: _maxItems
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7245782359657323618, guid: 4405a49d85cdc4bb4917be8b58edbbd8, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4413,7 +4417,7 @@ MonoBehaviour:
   _entitiesSpawnPoints: []
   _audioSource: {fileID: 743911619}
   _monsterSpawnClip: {fileID: 8300000, guid: 486acc65465b74224b50aede0f3fcd08, type: 3}
-  _monsterRespawnTime: 360
+  _monsterRespawnTime: 10
   _monsterLifeTime: 20
 --- !u!4 &1524856515 stripped
 Transform:
