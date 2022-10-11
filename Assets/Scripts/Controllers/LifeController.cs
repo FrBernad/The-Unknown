@@ -15,7 +15,7 @@ namespace Controllers
         public void Start()
         {
             _currentStamina = _maxStamina;
-            UI_Stamina_Updater();
+            UpdateStaminaUI();
         }
 
         public void decreaseStamina(float stamina)
@@ -26,7 +26,7 @@ namespace Controllers
                 _currentStamina = 0;
             }
 
-            UI_Stamina_Updater();
+            UpdateStaminaUI();
         }
 
         public void increaseStamina(float stamina)
@@ -38,10 +38,10 @@ namespace Controllers
                 _currentStamina = _maxStamina;
             }
 
-            UI_Stamina_Updater();
+            UpdateStaminaUI();
         }
 
-        public void UI_Stamina_Updater()
+        public void UpdateStaminaUI()
         {
             EventManager.instance.StaminaChange(_currentStamina / 100);
         }

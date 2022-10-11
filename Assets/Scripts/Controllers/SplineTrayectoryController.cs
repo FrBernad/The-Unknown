@@ -1,13 +1,16 @@
 using System;
 using UnityEngine;
 
-public class SplineTrayectoryController : MonoBehaviour
+namespace Controllers
 {
-    [SerializeField] private Spline _spline;
-    [SerializeField] private Transform _targetPosition;
-
-    private void Update()
+    public class SplineTrayectoryController : MonoBehaviour
     {
-        transform.position = _spline.PositionOnSpline(_targetPosition.position);
+        [SerializeField] private Spline _spline;
+        [SerializeField] private Transform _targetPosition;
+
+        private void Update()
+        {
+            transform.position = _spline.PositionOnSpline(_targetPosition.position);
+        }
     }
 }

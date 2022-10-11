@@ -7,6 +7,7 @@ namespace Entities
     public class Character : MonoBehaviour
     {
         private MovementController _movementController;
+        private MovementAnimationController _movementAnimationController;
         private LifeController _lifeController;
         private Inventory _inventory;
 
@@ -26,12 +27,15 @@ namespace Entities
         {
             _movementController = GetComponent<MovementController>();
             _lifeController = GetComponent<LifeController>();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             _inventory = GetComponent<Inventory>();
         }
 
         private void Update()
         {
-            _movementController.Rotate(Vector3.up * Input.GetAxis("Mouse X"));
+            float xRotation = Input.GetAxisRaw("Mouse X");
+            _movementController.Rotate(Vector3.up * xRotation);
 
             if (Input.GetKey(moveForward))
             {
@@ -107,10 +111,6 @@ namespace Entities
                 {
                     MissingNotes(true);
                 }
-            }
-            else if (collision.gameObject.CompareTag("Monster"))
-            {
-                EventManager.instance.GameOver(false);
             }
         }
 

@@ -1,51 +1,56 @@
 using System;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MonsterController : MonoBehaviour
+namespace Controllers
 {
-    private NavMeshAgent _agent;
-    private Transform _objective;
-    private AudioSource _nearbyAudioSource;
-
-    private void Awake()
+    public class MonsterController : MonoBehaviour
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _objective = GameObject.FindGameObjectWithTag("Player").transform;
-        _nearbyAudioSource = GetComponent<AudioSource>();
-    }
+        private NavMeshAgent _agent;
+        private Transform _objective;
+        private AudioSource _nearbyAudioSource;
 
-    private void Update()
-    {
-        if (_objective != null)
+        private void Awake()
         {
-            _agent.SetDestination(_objective.position);
-            UpdateNearbySound();
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-        }
-    }
-
-    private void UpdateNearbySound()
-    {
-        bool isNearby = (_objective.position - transform.position).magnitude <= _nearbyAudioSource.maxDistance;
-
-        _nearbyAudioSource.enabled = isNearby;
-
-        if (isNearby && !_nearbyAudioSource.isPlaying)
-        {
-            _nearbyAudioSource.Play();
+            _agent = GetComponent<NavMeshAgent>();
+            _objective = GameObject.FindGameObjectWithTag("Player").transform;
+            _nearbyAudioSource = GetComponent<AudioSource>();
         }
 
-        if (!isNearby && _nearbyAudioSource.isPlaying)
+        private void Update()
         {
-            _nearbyAudioSource.Stop();
+            if (_objective != null)
+            {
+                _agent.SetDestination(_objective.position);
+                UpdateNearbySound();
+            }
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                EventManager.instance.GameOver(false);
+            }
+        }
+
+        private void UpdateNearbySound()
+        {
+            bool isNearby = (_objective.position - transform.position).magnitude <= _nearbyAudioSource.maxDistance;
+
+            _nearbyAudioSource.enabled = isNearby;
+
+            if (isNearby && !_nearbyAudioSource.isPlaying)
+            {
+                _nearbyAudioSource.Play();
+            }
+
+            if (!isNearby && _nearbyAudioSource.isPlaying)
+            {
+                _nearbyAudioSource.Stop();
+            }
         }
     }
 }

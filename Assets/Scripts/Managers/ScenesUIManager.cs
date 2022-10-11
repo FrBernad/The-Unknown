@@ -2,9 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class UIScenesTransition : MonoBehaviour
+public class ScenesUIManager : MonoBehaviour
 {
-    static public UIScenesTransition instance;
+    static public ScenesUIManager instance;
 
     [SerializeField] private GameObject mainMenu;
     [SerializeField] private GameObject optionsMenu;
@@ -13,7 +13,7 @@ public class UIScenesTransition : MonoBehaviour
 
     private void Awake()
     {
-        if (instance != null) Destroy(this.gameObject);
+        if (instance != null) Destroy(gameObject);
         instance = this;
     }
 

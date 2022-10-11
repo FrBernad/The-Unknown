@@ -25,6 +25,7 @@ namespace Managers
         public void GameOver(bool isVictory)
         {
             if (OnGameOver != null) OnGameOver(isVictory);
+
         }
 
         #endregion

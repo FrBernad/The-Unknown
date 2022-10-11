@@ -8,6 +8,6 @@ public class Item : MonoBehaviour
 {
     public void PickUpItem()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

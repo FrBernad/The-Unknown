@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _monster;
-    [SerializeField] private GameObject _player;
     [SerializeField] private List<Transform> _entitiesSpawnPoints;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _monsterSpawnClip;
@@ -19,7 +18,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetSpawnPoints();
-        // SetSpawnPosition(_player);
         StartCoroutine(MonsterLifecycle());
         EventManager.instance.OnGameOver += GameOver;
         // StartCoroutine(DisplayInitialMessage());
@@ -72,29 +70,9 @@ public class GameManager : MonoBehaviour
         _audioSource.PlayOneShot(_monsterSpawnClip);
         return monster;
     }
-
     public void GameOver(bool isVictory)
     {
         GlobalData.instance.SetVictoryField(isVictory);
-        UIScenesTransition.instance.GameOver();
+        SceneManager.LoadScene("Game Over");
     }
-    //     public void Botones(bool eleccion)
-    // {
-    //     if (eleccion == true)
-    //     {
-    //         SceneManager.LoadScene(0);
-    //     }
-    //     else
-    //     {
-    //         Application.Quit();
-    //     }
-    // }
-    //
-    //
-    // public void Aparecefinal(string texto)
-    // {
-    //     panelFinal.SetActive(true);
-    //     textoFinal.text = texto;
-    //
-    // }
 }
