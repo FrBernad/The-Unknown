@@ -6,9 +6,9 @@ public class ScenesUIManager : MonoBehaviour
 {
     static public ScenesUIManager instance;
 
-    [SerializeField] private GameObject mainMenu;
-    [SerializeField] private GameObject optionsMenu;
-    [SerializeField] private GameObject informationMenu;
+    [SerializeField] private GameObject mainMenu = null;
+    [SerializeField] private GameObject optionsMenu = null;
+    [SerializeField] private GameObject informationMenu = null;
     private GameObject _currentMenu;
 
     private void Awake()
@@ -54,11 +54,6 @@ public class ScenesUIManager : MonoBehaviour
         _currentMenu = menuObject;
         mainMenu.SetActive(false);
         _currentMenu.SetActive(true);
-    }
-
-    public void GameOver()
-    {
-        SceneManager.LoadScene("Game Over");
     }
 
     public void CloseGame() => Application.Quit();
