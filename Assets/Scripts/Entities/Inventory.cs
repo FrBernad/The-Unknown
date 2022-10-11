@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public int MaxItems => _maxItems;
     [SerializeField] private int _maxItems;
+    public int CurrentItems => _currentItems;
     private int _currentItems = 0;
 
     private void Start()
@@ -13,7 +15,7 @@ public class Inventory : MonoBehaviour
         UI_Inventory_Updater();
     }
 
-    public void PickUpItem()
+    public void StoreItem()
     {
         _currentItems++;
         //Llamo al método que dispara el evento

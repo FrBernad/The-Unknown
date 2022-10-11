@@ -10,10 +10,11 @@ namespace Managers
         [SerializeField] private Text _inventoryItems;
         [SerializeField] private Image _staminaBar;
         [SerializeField] private GameObject _messagePanel;
+        [SerializeField] private Text _panelText;
 
         private void Awake()
         {
-            ShowActionPanel(false);
+            ShowActionPanel(false, "");
         }
 
         private void Start()
@@ -21,7 +22,7 @@ namespace Managers
             // Realizo la suscripción al evento con el método que se va a suscribir
             EventManager.instance.OnInventoryChange += UpdateInventoryChange;
             EventManager.instance.OnStaminaChange += UpdateStaminaChange;
-            EventManager.instance.OnItemInventoryCollision += ShowActionPanel;
+            EventManager.instance.OnUIPanelUpdate += ShowActionPanel;
         }
 
         private void UpdateInventoryChange(int currentItems, int maxItems)
@@ -34,9 +35,10 @@ namespace Managers
             _staminaBar.fillAmount = currentStamina;
         }
 
-        private void ShowActionPanel(bool show)
+        private void ShowActionPanel(bool show, string message)
         {
             _messagePanel.SetActive(show);
+            _panelText.text = message;
         }
     }
 }

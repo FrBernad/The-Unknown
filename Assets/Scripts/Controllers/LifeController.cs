@@ -43,7 +43,6 @@ namespace Controllers
 
         public void UI_Stamina_Updater()
         {
-            Debug.Log(_currentStamina);
             EventManager.instance.StaminaChange(_currentStamina / 100);
         }
     }

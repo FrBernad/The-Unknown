@@ -35,7 +35,7 @@ namespace Managers
         public event Action<int, int> OnInventoryChange;
         public event Action<float> OnStaminaChange;
 
-        public event Action<bool> OnItemInventoryCollision;
+        public event Action<bool, string> OnUIPanelUpdate;
 
         // Método de activación del evento
         public void InventoryChange(int currentItems, int maxItems)
@@ -49,9 +49,9 @@ namespace Managers
             if (OnStaminaChange != null) OnStaminaChange(currentStamina);
         }
 
-        public void ItemInventoryCollision(bool show)
+        public void UIPanelUpdate(bool show, string message)
         {
-            if (OnItemInventoryCollision != null) OnItemInventoryCollision(show);
+            if (OnUIPanelUpdate != null) OnUIPanelUpdate(show,message);
         }
 
         #endregion

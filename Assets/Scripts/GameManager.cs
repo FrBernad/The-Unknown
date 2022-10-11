@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -18,8 +19,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetSpawnPoints();
-        SetSpawnPosition(_player);
+        // SetSpawnPosition(_player);
         StartCoroutine(MonsterLifecycle());
+        // StartCoroutine(DisplayInitialMessage());
+    }
+
+    private IEnumerator<WaitForSeconds> DisplayInitialMessage()
+    {
+        EventManager.instance.UIPanelUpdate(true, "Grab all the notes and \n return to the boat");
+        yield return new WaitForSeconds(2);
+        EventManager.instance.UIPanelUpdate(false, "");
     }
 
     private IEnumerator<WaitForSeconds> MonsterLifecycle()
