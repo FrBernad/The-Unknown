@@ -1234,9 +1234,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e317b7e0651749d58a2bd969e286ac35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 1240779057}
-  optionsMenu: {fileID: 0}
-  informationMenu: {fileID: 0}
 --- !u!114 &2004317294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1252,9 +1249,9 @@ MonoBehaviour:
   _image: {fileID: 1723530379}
   _text: {fileID: 1659932103}
   _isVictory: 0
-  _victoryClip: {fileID: 8300000, guid: 17ba1727641854eda8251698d17c8942, type: 3}
-  _defeatClip: {fileID: 8300000, guid: 160d10dff8c564f6f89981c3489d2c71, type: 3}
-  _message: Hola
+  _victoryClip: {fileID: 8300000, guid: e72ead3fb2cab4f7b8c3adb89a364fde, type: 3}
+  _defeatClip: {fileID: 8300000, guid: c698f354bd66d4de8b50a8abffb1cc0e, type: 3}
+  _message: 
 --- !u!4 &2004317295
 Transform:
   m_ObjectHideFlags: 0

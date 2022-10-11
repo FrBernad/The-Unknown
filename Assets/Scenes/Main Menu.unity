@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -339,8 +339,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1492398313}
-        m_TargetAssemblyTypeName: UIButtonLogic, Assembly-CSharp
+      - m_Target: {fileID: 1492398315}
+        m_TargetAssemblyTypeName: DefaultNamespace.MenuLogic, Assembly-CSharp
         m_MethodName: LoadOptionScene
         m_Mode: 1
         m_Arguments:
@@ -472,8 +472,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1492398313}
-        m_TargetAssemblyTypeName: UIButtonLogic, Assembly-CSharp
+      - m_Target: {fileID: 1492398315}
+        m_TargetAssemblyTypeName: DefaultNamespace.MenuLogic, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
         m_Arguments:
@@ -2473,8 +2473,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1492398313}
-        m_TargetAssemblyTypeName: UIButtonLogic, Assembly-CSharp
+      - m_Target: {fileID: 1492398315}
+        m_TargetAssemblyTypeName: DefaultNamespace.MenuLogic, Assembly-CSharp
         m_MethodName: LoadInfoScene
         m_Mode: 1
         m_Arguments:
@@ -2533,6 +2533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1492398314}
   - component: {fileID: 1492398313}
+  - component: {fileID: 1492398315}
   m_Layer: 0
   m_Name: ButtonsScript
   m_TagString: Untagged
@@ -2552,9 +2553,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e317b7e0651749d58a2bd969e286ac35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenu: {fileID: 479642217}
-  optionsMenu: {fileID: 44251183}
-  informationMenu: {fileID: 534726313}
 --- !u!4 &1492398314
 Transform:
   m_ObjectHideFlags: 0
@@ -2569,6 +2567,21 @@ Transform:
   m_Father: {fileID: 226462828}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1492398315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492398312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df5defd72884b20a99dc84d8ae6a5f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMenu: {fileID: 479642217}
+  optionsMenu: {fileID: 44251183}
+  informationMenu: {fileID: 534726313}
 --- !u!1 &1515971048
 GameObject:
   m_ObjectHideFlags: 0
@@ -2833,8 +2846,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1492398313}
-        m_TargetAssemblyTypeName: UIButtonLogic, Assembly-CSharp
+      - m_Target: {fileID: 1492398315}
+        m_TargetAssemblyTypeName: DefaultNamespace.MenuLogic, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
         m_Arguments:
