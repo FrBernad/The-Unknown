@@ -10,7 +10,10 @@ namespace Controllers
 
         private void Update()
         {
-            transform.position = _spline.PositionOnSpline(_targetPosition.position);
+            (Vector3 pos, Quaternion rot) result = _spline.PositionOnSpline(_targetPosition.position);
+            Transform tr = transform;
+            tr.position = result.pos;
+            tr.rotation = result.rot;
         }
     }
 }

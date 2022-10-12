@@ -23,14 +23,14 @@ namespace Entities
 
         private Flashlight _flashlight;
 
+        [SerializeField] private Transform groundCheck;
+        [SerializeField] private float groundDistance = 0.3f;
+        [SerializeField] private LayerMask groundMask;
+
         private bool _isGrounded;
 
-        public Transform groundCheck;
-        public float groundDistance = 0.3f;
-        public LayerMask groundMask;
-
-        public float jumpHeight = 1f;
-        private const float _GRAVITY = -9.81f;
+        private AudioSource _audioSource;
+        [SerializeField] private AudioClip _pickupAudioClip;
 
         private void Start()
         {
@@ -39,6 +39,7 @@ namespace Entities
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             _inventory = GetComponent<Inventory>();
+            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
@@ -90,6 +91,7 @@ namespace Entities
                     Note note = collision.GetComponent<Note>();
                     note.Pickup();
                     _inventory.StoreItem();
+                    _audioSource.PlayOneShot(_pickupAudioClip);
                     UpdateUIPanel(null);
                 }
             }
@@ -181,8 +183,7 @@ namespace Entities
 
             if (Input.GetKeyDown(jump) && _isGrounded)
             {
-                float force = Mathf.Sqrt(jumpHeight * -2f * _GRAVITY);
-                _movementController.Jump(Vector3.up * force);
+                _movementController.Jump(Vector3.up);
             }
         }
 
