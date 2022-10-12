@@ -33,8 +33,13 @@ namespace Entities
 
         private bool _isGrounded;
 
-        private AudioSource _audioSource;
-        [SerializeField] private AudioClip _pickupAudioClip;
+        [SerializeField] private AudioSource _interactionsAudioSource;
+        [SerializeField] private AudioClip _pickupNoteAudioClip;
+        [SerializeField] private AudioClip _pickupFlashlightAudioClip;
+
+        [SerializeField] private AudioSource _walkingAudioSource;
+        [SerializeField] private AudioSource _sprintingAudioSource;
+
 
         private void Start()
         {
@@ -43,16 +48,16 @@ namespace Entities
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             _inventory = GetComponent<Inventory>();
-            _audioSource = GetComponent<AudioSource>();
         }
 
         private void Update()
         {
             UpdateMovement();
-            UpdateFlashlight();
+            UpdateMovementAudio();
+            UpdateFlashlightState();
         }
 
-        private void UpdateFlashlight()
+        private void UpdateFlashlightState()
         {
             if (_flashlight != null && Input.GetKeyDown(switchFlashlight))
             {
@@ -95,7 +100,7 @@ namespace Entities
                     Note note = collision.GetComponent<Note>();
                     note.Pickup();
                     _inventory.StoreItem();
-                    _audioSource.PlayOneShot(_pickupAudioClip);
+                    _interactionsAudioSource.PlayOneShot(_pickupNoteAudioClip);
                     UpdateUIPanel(null);
                 }
             }
@@ -109,6 +114,7 @@ namespace Entities
 
                     _flashlight = gameObject.GetComponentInChildren<Flashlight>(true);
                     _flashlight.gameObject.SetActive(true);
+                    _interactionsAudioSource.PlayOneShot(_pickupFlashlightAudioClip);
                     UpdateUIPanel(null);
                 }
             }
@@ -132,6 +138,28 @@ namespace Entities
             }
         }
 
+        private void UpdateMovementAudio()
+        {
+            if (Input.GetKey(moveForward) || Input.GetKey(moveBackward) || Input.GetKey(moveLeft) ||
+                Input.GetKey(moveRight))
+            {
+                _walkingAudioSource.enabled = true;
+                if (_movementController.Sprinting)
+                {
+                    _walkingAudioSource.enabled = false;
+                    _sprintingAudioSource.enabled = true;
+                }
+                else
+                {
+                    _sprintingAudioSource.enabled = false;
+                }
+            }
+            else
+            {
+                _walkingAudioSource.enabled = false;
+                _sprintingAudioSource.enabled = false;
+            }
+        }
 
         private void UpdateMovement()
         {

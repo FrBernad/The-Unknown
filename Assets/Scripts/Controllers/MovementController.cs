@@ -10,10 +10,11 @@ namespace Controllers
     {
         private const float _GRAVITY = -9.81f;
 
-        public float Speed => GetComponent<Character>().CharacterStats.Speed;
         public float RotationSpeed => GetComponent<Character>().CharacterStats.RotationSpeed;
+        public float Speed => GetComponent<Character>().CharacterStats.Speed;
 
-        private Boolean _sprint = false;
+        public Boolean Sprinting => _sprinting;
+        private Boolean _sprinting;
 
         private Rigidbody _rigidbody;
         private float JumpHeight => GetComponent<Character>().CharacterStats.JumpHeight;
@@ -25,7 +26,7 @@ namespace Controllers
 
         public void Move(Vector3 direction)
         {
-            float realSpeed = _sprint ? Speed * 2 : Speed;
+            float realSpeed = _sprinting ? Speed * 2 : Speed;
             transform.Translate(direction * (realSpeed * Time.deltaTime));
         }
 
@@ -40,9 +41,9 @@ namespace Controllers
             transform.Rotate(direction * (RotationSpeed * Time.deltaTime));
         }
 
-        public void Sprint(Boolean activateSprint)
+        public void Sprint(Boolean isSprinting)
         {
-            _sprint = activateSprint;
+            _sprinting = isSprinting;
         }
     }
 }

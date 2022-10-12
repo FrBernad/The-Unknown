@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Interfaces
 {
@@ -6,7 +7,8 @@ namespace Interfaces
     {
         float Speed { get; }
         float RotationSpeed { get; }
-    
+        Boolean Sprinting { get; }
+
         void Move(Vector3 direction);
 
         void Jump(Vector3 direction);
