@@ -15,12 +15,22 @@ namespace Entities
         [SerializeField] private KeyCode moveLeft = KeyCode.A;
         [SerializeField] private KeyCode moveRight = KeyCode.D;
 
+        [SerializeField] private KeyCode jump = KeyCode.Space;
         [SerializeField] private KeyCode sprint = KeyCode.LeftShift;
 
         [SerializeField] private KeyCode pickup = KeyCode.G;
         [SerializeField] private KeyCode switchFlashlight = KeyCode.F;
 
         private Flashlight _flashlight;
+
+        private bool _isGrounded;
+
+        public Transform groundCheck;
+        public float groundDistance = 0.3f;
+        public LayerMask groundMask;
+
+        public float jumpHeight = 1f;
+        private const float _GRAVITY = -9.81f;
 
         private void Start()
         {
@@ -120,7 +130,6 @@ namespace Entities
         private void UpdateMovement()
         {
             float mouseX = Input.GetAxis("Mouse X");
-
             _movementController.Rotate(Vector3.up * mouseX);
 
             if (Input.GetKey(moveForward))
@@ -166,6 +175,14 @@ namespace Entities
             if (Input.GetKeyUp(sprint))
             {
                 _movementController.Sprint(false);
+            }
+
+            _isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+            if (Input.GetKeyDown(jump) && _isGrounded)
+            {
+                float force = Mathf.Sqrt(jumpHeight * -2f * _GRAVITY);
+                _movementController.Jump(Vector3.up * force);
             }
         }
 

@@ -8,7 +8,9 @@ namespace Interfaces
         float RotationSpeed { get; }
     
         void Move(Vector3 direction);
-        
+
+        void Jump(Vector3 direction);
+
         void Rotate(Vector3 direction);
     }
 }

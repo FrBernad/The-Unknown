@@ -15,10 +15,22 @@ namespace Controllers
 
         private Boolean _sprint = false;
 
+        private Rigidbody _rigidbody;
+
+        private void Start()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+        }
+
         public void Move(Vector3 direction)
         {
-            float auxSpeed = _sprint ? speed * 2 : speed;
-            transform.Translate(direction * (auxSpeed * Time.deltaTime));
+            float realSpeed = _sprint ? speed * 2 : speed;
+            transform.Translate(direction * (realSpeed * Time.deltaTime));
+        }
+
+        public void Jump(Vector3 direction)
+        {
+            _rigidbody.AddForce(direction, ForceMode.Impulse);
         }
 
         public void Rotate(Vector3 direction)
