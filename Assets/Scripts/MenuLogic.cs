@@ -5,7 +5,7 @@ namespace DefaultNamespace
     public class MenuLogic : MonoBehaviour
     {
         [SerializeField] private GameObject mainMenu = null;
-        [SerializeField] private GameObject optionsMenu = null;
+        [SerializeField] private GameObject controlsMenu = null;
         [SerializeField] private GameObject informationMenu = null;
 
         [SerializeField] private AudioClip backClip;
@@ -22,7 +22,7 @@ namespace DefaultNamespace
             _audioSource.loop = false;
             _currentMenu = mainMenu;
             _currentMenu.SetActive(true);
-            optionsMenu.SetActive(false);
+            controlsMenu.SetActive(false);
             informationMenu.SetActive(false);
         }
 
@@ -44,10 +44,10 @@ namespace DefaultNamespace
             SwapCurrentMenu(informationMenu);
         }
 
-        public void LoadOptionScene()
+        public void LoadControlScene()
         {
             clickSound(clickClip);
-            SwapCurrentMenu(optionsMenu);
+            SwapCurrentMenu(controlsMenu);
         }
 
         public void BackToMainMenu()

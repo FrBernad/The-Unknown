@@ -71,7 +71,7 @@ namespace Entities
                 }
                 else
                 {
-                    UpdateUIPanel("You must collect all notes");
+                    UpdateUIPanel("You must collect all notes\n before returning to the boat");
                 }
             }
 
