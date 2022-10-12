@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour
 {
-    private Light _light;
+    private GameObject _light;
     private bool isOn = true;
 
     private AudioSource _audioSource;
 
     void Start()
     {
-        _light = gameObject.GetComponentInChildren<Light>(true);
-        _light.gameObject.SetActive(isOn);
+        _light = transform.GetChild(0).gameObject;
+        _light.SetActive(isOn);
 
         _audioSource = gameObject.GetComponent<AudioSource>();
     }
@@ -19,7 +19,7 @@ public class Flashlight : MonoBehaviour
     public void Switch()
     {
         isOn = !isOn;
-        _light.gameObject.SetActive(isOn);
+        _light.SetActive(isOn);
         _audioSource.Play();
     }
 

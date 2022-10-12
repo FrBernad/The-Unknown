@@ -119,8 +119,9 @@ namespace Entities
 
         private void UpdateMovement()
         {
-            float xRotation = Input.GetAxisRaw("Mouse X");
-            _movementController.Rotate(Vector3.up * xRotation);
+            float mouseX = Input.GetAxis("Mouse X");
+
+            _movementController.Rotate(Vector3.up * mouseX);
 
             if (Input.GetKey(moveForward))
             {
