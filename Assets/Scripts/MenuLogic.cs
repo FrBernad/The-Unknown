@@ -35,7 +35,7 @@ namespace DefaultNamespace
         public void QuitGame()
         {
             clickSound(clickClip);
-            ScenesUIManager.instance.LoadLevelScene();
+            ScenesUIManager.instance.CloseGame();
         }
 
         public void LoadInfoScene()
