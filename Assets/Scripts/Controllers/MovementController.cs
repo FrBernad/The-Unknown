@@ -1,4 +1,5 @@
 ﻿using System;
+using Entities;
 using Interfaces;
 using UnityEngine;
 
@@ -9,15 +10,13 @@ namespace Controllers
     {
         private const float _GRAVITY = -9.81f;
 
-        public float Speed => speed;
-        [SerializeField] private float speed = 10f;
-        public float RotationSpeed => rotationSpeed;
-        [SerializeField] private float rotationSpeed = 300f;
+        public float Speed => GetComponent<Character>().CharacterStats.Speed;
+        public float RotationSpeed => GetComponent<Character>().CharacterStats.RotationSpeed;
 
         private Boolean _sprint = false;
 
         private Rigidbody _rigidbody;
-        [SerializeField] private float jumpHeight = 2f;
+        private float JumpHeight => GetComponent<Character>().CharacterStats.JumpHeight;
 
         private void Start()
         {
@@ -26,19 +25,19 @@ namespace Controllers
 
         public void Move(Vector3 direction)
         {
-            float realSpeed = _sprint ? speed * 2 : speed;
+            float realSpeed = _sprint ? Speed * 2 : Speed;
             transform.Translate(direction * (realSpeed * Time.deltaTime));
         }
 
         public void Jump(Vector3 direction)
         {
-            float force = Mathf.Sqrt(jumpHeight * -2f * _GRAVITY);
+            float force = Mathf.Sqrt(JumpHeight * -2f * _GRAVITY);
             _rigidbody.AddForce(direction * force, ForceMode.Impulse);
         }
 
         public void Rotate(Vector3 direction)
         {
-            transform.Rotate(direction * (rotationSpeed * Time.deltaTime));
+            transform.Rotate(direction * (RotationSpeed * Time.deltaTime));
         }
 
         public void Sprint(Boolean activateSprint)

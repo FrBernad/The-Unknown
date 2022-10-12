@@ -1,4 +1,5 @@
 ﻿using Controllers;
+using Flyweight;
 using Managers;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ namespace Entities
 {
     public class Character : MonoBehaviour
     {
+        public CharacterStats CharacterStats => _characterStats;
+        [SerializeField] private CharacterStats _characterStats;
+        
         private MovementController _movementController;
         private LifeController _lifeController;
         private Inventory _inventory;
