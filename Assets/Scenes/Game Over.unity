@@ -986,7 +986,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: NOMBRE DEL JUEGO
+  m_Text: THE UNKNOWN
 --- !u!222 &1659932104
 CanvasRenderer:
   m_ObjectHideFlags: 0
