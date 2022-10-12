@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Commands;
+using EventQueues;
 using Managers;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,12 +13,18 @@ namespace Controllers
         private NavMeshAgent _agent;
         private Transform _objective;
         private AudioSource _nearbyAudioSource;
+        private CmdLose _cmdLose;
 
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
             _objective = GameObject.FindGameObjectWithTag("Player").transform;
             _nearbyAudioSource = GetComponent<AudioSource>();
+        }
+
+        private void Start()
+        {
+            _cmdLose = new CmdLose();
         }
 
         private void Update()
@@ -30,10 +38,7 @@ namespace Controllers
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.gameObject.CompareTag("Player"))
-            {
-                EventManager.instance.GameOver(false);
-            }
+            if (other.gameObject.CompareTag("Player")) EventQueueManager.instance.AddCommand(_cmdLose);
         }
 
         private void UpdateNearbySound()

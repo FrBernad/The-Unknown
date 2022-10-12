@@ -1,4 +1,6 @@
-﻿using Controllers;
+﻿using Commands;
+using EventQueues;
+using Controllers;
 using Flyweight;
 using Managers;
 using UnityEngine;
@@ -9,10 +11,14 @@ namespace Entities
     {
         public CharacterStats CharacterStats => _characterStats;
         [SerializeField] private CharacterStats _characterStats;
-        
+
+        //Instancias
         private MovementController _movementController;
         private LifeController _lifeController;
         private Inventory _inventory;
+        private Flashlight _flashlight;
+
+        //Binding movements
 
         [SerializeField] private KeyCode moveForward = KeyCode.W;
         [SerializeField] private KeyCode moveBackward = KeyCode.S;
@@ -25,12 +31,10 @@ namespace Entities
         [SerializeField] private KeyCode pickup = KeyCode.G;
         [SerializeField] private KeyCode switchFlashlight = KeyCode.F;
 
-        private Flashlight _flashlight;
-
+        // Movement properties
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundDistance = 0.3f;
         [SerializeField] private LayerMask groundMask;
-
         private bool _isGrounded;
 
         [SerializeField] private AudioSource _interactionsAudioSource;
@@ -41,13 +45,39 @@ namespace Entities
         [SerializeField] private AudioSource _sprintingAudioSource;
 
 
+        //Commands
+        private CmdMovement _cmdMoveForward;
+        private CmdMovement _cmdMoveBack;
+        private CmdMovement _cmdMoveLeft;
+        private CmdMovement _cmdMoveRight;
+        private CmdRotation _cmdRotation;
+        private CmdJump _cmdJump;
+        private CmdStartSprinting _cmdStartSprinting;
+        private CmdStopSprinting _cmdStopSprinting;
+        private CmdPickUpLantern _cmdPickUpLantern;
+        private CmdPickUpNote _cmdPickUpNote;
+        private CmdWin _cmdWin;
+        private CmdSwitchLantern _cmdSwitchLantern;
+
+        private bool hasFlashlight = false;
+
+
         private void Start()
         {
             _movementController = GetComponent<MovementController>();
             _lifeController = GetComponent<LifeController>();
+            _inventory = GetComponent<Inventory>();
+            _cmdMoveForward = new CmdMovement(_movementController, Vector3.forward);
+            _cmdMoveBack = new CmdMovement(_movementController, Vector3.back);
+            _cmdMoveLeft = new CmdMovement(_movementController, Vector3.left);
+            _cmdMoveRight = new CmdMovement(_movementController, Vector3.right);
+            _cmdStartSprinting = new CmdStartSprinting(_lifeController, _movementController);
+            _cmdStopSprinting = new CmdStopSprinting(_lifeController, _movementController);
+            _cmdJump = new CmdJump(_movementController, Vector3.up);
+            _cmdWin = new CmdWin();
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            _inventory = GetComponent<Inventory>();
         }
 
         private void Update()
@@ -59,9 +89,9 @@ namespace Entities
 
         private void UpdateFlashlightState()
         {
-            if (_flashlight != null && Input.GetKeyDown(switchFlashlight))
+            if (hasFlashlight && Input.GetKeyDown(switchFlashlight))
             {
-                _flashlight.Switch();
+                EventQueueManager.instance.AddCommand(_cmdSwitchLantern);
             }
         }
 
@@ -69,24 +99,26 @@ namespace Entities
         {
             if (collision.gameObject.CompareTag("Note"))
             {
+                Note note = collision.GetComponent<Note>();
+                _cmdPickUpNote = new CmdPickUpNote(note, _inventory, _interactionsAudioSource, _pickupNoteAudioClip);
                 UpdateUIPanel("Press G to pickup");
             }
 
             if (collision.gameObject.CompareTag("Boat"))
             {
-                if (_inventory.IsFull())
-                {
-                    EventManager.instance.GameOver(true);
-                    UpdateUIPanel(null);
-                }
+                if (_inventory.IsFull()) EventQueueManager.instance.AddCommand(_cmdWin);
                 else
                 {
                     UpdateUIPanel("You must collect all notes\n before returning to the boat");
                 }
             }
 
-            if (_flashlight == null && collision.gameObject.CompareTag("Flashlight"))
+            if (collision.gameObject.CompareTag("Flashlight"))
             {
+                _flashlight = gameObject.GetComponentInChildren<Flashlight>(true);
+                Flashlight floorFlashlight = collision.GetComponent<Flashlight>();
+                _cmdPickUpLantern = new CmdPickUpLantern(floorFlashlight, _flashlight, _interactionsAudioSource,
+                    _pickupFlashlightAudioClip);
                 UpdateUIPanel("Press G to pickup");
             }
         }
@@ -97,24 +129,18 @@ namespace Entities
             {
                 if (Input.GetKey(pickup))
                 {
-                    Note note = collision.GetComponent<Note>();
-                    note.Pickup();
-                    _inventory.StoreItem();
-                    _interactionsAudioSource.PlayOneShot(_pickupNoteAudioClip);
+                    EventQueueManager.instance.AddCommand(_cmdPickUpNote);
                     UpdateUIPanel(null);
                 }
             }
 
-            if (_flashlight == null && collision.gameObject.CompareTag("Flashlight"))
+            if (collision.gameObject.CompareTag("Flashlight"))
             {
                 if (Input.GetKey(pickup))
                 {
-                    Flashlight floorFlashlight = collision.GetComponent<Flashlight>();
-                    floorFlashlight.Pickup();
-
-                    _flashlight = gameObject.GetComponentInChildren<Flashlight>(true);
-                    _flashlight.gameObject.SetActive(true);
-                    _interactionsAudioSource.PlayOneShot(_pickupFlashlightAudioClip);
+                    EventQueueManager.instance.AddCommand(_cmdPickUpLantern);
+                    hasFlashlight = true;
+                    _cmdSwitchLantern = new CmdSwitchLantern(_flashlight);
                     UpdateUIPanel(null);
                 }
             }
@@ -122,17 +148,8 @@ namespace Entities
 
         private void OnTriggerExit(Collider collision)
         {
-            if (collision.gameObject.CompareTag("Note"))
-            {
-                UpdateUIPanel(null);
-            }
-
-            if (collision.gameObject.CompareTag("Flashlight"))
-            {
-                UpdateUIPanel(null);
-            }
-
-            else if (collision.gameObject.CompareTag("Boat"))
+            if (collision.gameObject.CompareTag("Note") || collision.gameObject.CompareTag("Flashlight") ||
+                collision.gameObject.CompareTag("Boat"))
             {
                 UpdateUIPanel(null);
             }
@@ -164,39 +181,16 @@ namespace Entities
         private void UpdateMovement()
         {
             float mouseX = Input.GetAxis("Mouse X");
-            _movementController.Rotate(Vector3.up * mouseX);
+            _cmdRotation = new CmdRotation(_movementController, Vector3.up * mouseX);
+            EventQueueManager.instance.AddMovementCommand(_cmdRotation);
 
-            if (Input.GetKey(moveForward))
-            {
-                _movementController.Move(Vector3.forward);
-            }
-
-            if (Input.GetKey(moveBackward))
-            {
-                _movementController.Move(Vector3.back);
-            }
-
-            if (Input.GetKey(moveLeft))
-            {
-                _movementController.Move(Vector3.left);
-            }
-
-            if (Input.GetKey(moveRight))
-            {
-                _movementController.Move(Vector3.right);
-            }
-
+            if (Input.GetKey(moveForward)) EventQueueManager.instance.AddMovementCommand(_cmdMoveForward);
+            if (Input.GetKey(moveBackward)) EventQueueManager.instance.AddMovementCommand(_cmdMoveBack);
+            if (Input.GetKey(moveLeft)) EventQueueManager.instance.AddMovementCommand(_cmdMoveLeft);
+            if (Input.GetKey(moveRight)) EventQueueManager.instance.AddMovementCommand(_cmdMoveRight);
             if (Input.GetKey(sprint))
             {
-                if (_lifeController.CurrentStamina > 0)
-                {
-                    _movementController.Sprint(true);
-                    _lifeController.decreaseStamina(0.3f);
-                }
-                else
-                {
-                    _movementController.Sprint(false);
-                }
+                EventQueueManager.instance.AddMovementCommand(_cmdStartSprinting);
             }
             else
             {
@@ -206,17 +200,11 @@ namespace Entities
                 }
             }
 
-            if (Input.GetKeyUp(sprint))
-            {
-                _movementController.Sprint(false);
-            }
+            if (Input.GetKeyUp(sprint)) EventQueueManager.instance.AddCommand(_cmdStopSprinting);
 
             _isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
-            if (Input.GetKeyDown(jump) && _isGrounded)
-            {
-                _movementController.Jump(Vector3.up);
-            }
+            if (Input.GetKeyDown(jump) && _isGrounded) EventQueueManager.instance.AddMovementCommand(_cmdJump);
         }
 
         private void UpdateUIPanel(string message)
