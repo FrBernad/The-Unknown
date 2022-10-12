@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,7 +29,8 @@ namespace Managers
             {
                 float progress = operation.progress;
                 _progressBar.fillAmount = progress;
-                _progressValue.text = $"Loading... {progress * 100}";
+
+                _progressValue.text = $"Loading... {Convert.ToInt16(progress * 100)}%";
 
                 if (progress >= .9f)
                 {
