@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DefaultNamespace.Utils;
 using Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,12 +14,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int _monsterRespawnTime = 10;
     [SerializeField] private int _monsterLifeTime = 30;
 
+    [SerializeField] private AudioClip _screamerAudioClip;
+    [SerializeField] private GameObject _screamerObject;
+
     private void Start()
     {
         SetSpawnPoints();
         StartCoroutine(MonsterLifecycle());
-        EventManager.instance.OnGameOver += GameOver;
-        // StartCoroutine(DisplayInitialMessage());
+        EventManager.instance.OnGameOver += OnGameOver;
+        // StartCoroutine(DisplayInitialMessage()); FIXME!!!
     }
 
     private IEnumerator<WaitForSeconds> DisplayInitialMessage()
@@ -66,9 +70,18 @@ public class GameManager : MonoBehaviour
         return monster;
     }
 
-    public void GameOver(bool isVictory)
+    public void OnGameOver(bool isVictory)
     {
         GlobalData.instance.SetVictoryField(isVictory);
-        SceneManager.LoadScene("Game Over");
+        if (!isVictory)
+        {
+            _audioSource.PlayOneShot(_screamerAudioClip);
+            _screamerObject.SetActive(true);
+            StartCoroutine(Utils.DoDelayed(2.5f, () => SceneManager.LoadScene("Game Over")));
+        }
+        else
+        {
+            SceneManager.LoadScene("Game Over");
+        }
     }
 }

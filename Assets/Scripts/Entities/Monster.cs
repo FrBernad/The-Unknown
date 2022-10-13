@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace Controllers
 {
-    public class MonsterController : MonoBehaviour
+    public class Monster : MonoBehaviour
     {
         private NavMeshAgent _agent;
         private CmdLose _cmdLose;

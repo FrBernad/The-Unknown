@@ -1,5 +1,4 @@
-using System;
-using System.Collections;
+using DefaultNamespace.Utils;
 using UnityEngine;
 
 namespace Entities
@@ -16,18 +15,14 @@ namespace Entities
 
         private void OnTriggerEnter(Collider collision)
         {
-            if (collision.gameObject.CompareTag("Player")) StartCoroutine(DoDelayed(() => _plane.SetActive(true)));
+            if (collision.gameObject.CompareTag("Player"))
+                StartCoroutine(Utils.DoDelayed(0f, () => _plane.SetActive(true)));
         }
 
         private void OnTriggerExit(Collider collision)
         {
-            if (collision.gameObject.CompareTag("Player")) StartCoroutine(DoDelayed(() => _plane.SetActive(false)));
-        }
-
-        private IEnumerator DoDelayed(Action action)
-        {
-            yield return null;
-            if (action != null) action();
+            if (collision.gameObject.CompareTag("Player"))
+                StartCoroutine(Utils.DoDelayed(0, () => _plane.SetActive(false)));
         }
     }
 }

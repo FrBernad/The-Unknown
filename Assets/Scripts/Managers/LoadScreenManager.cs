@@ -12,12 +12,10 @@ namespace Managers
         [SerializeField] private Text _progressValue;
         [SerializeField] private string _targetScene = "Main Island";
 
-
         private void Start()
         {
             StartCoroutine(LoadAsync());
         }
-
 
         //Corutina: método base que vamos a llamar en el inicio de la corutina
         private IEnumerator LoadAsync()
