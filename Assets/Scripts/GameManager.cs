@@ -22,13 +22,13 @@ public class GameManager : MonoBehaviour
         SetSpawnPoints();
         StartCoroutine(MonsterLifecycle());
         EventManager.instance.OnGameOver += OnGameOver;
-        // StartCoroutine(DisplayInitialMessage()); FIXME!!!
+        StartCoroutine(DisplayInitialMessage());
     }
 
     private IEnumerator<WaitForSeconds> DisplayInitialMessage()
     {
         EventManager.instance.UIPanelUpdate("Grab all the notes and \n return to the boat");
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         EventManager.instance.UIPanelUpdate(null);
     }
 
