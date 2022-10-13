@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
 using Managers;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public int MaxItems => _maxItems;
-    private int _maxItems = 8;
-    public int CurrentItems => _currentItems;
-    private int _currentItems = 0;
+    public int MaxItems { get; } = 8;
+
+    public int CurrentItems { get; private set; }
 
     private void Start()
     {
@@ -17,18 +14,18 @@ public class Inventory : MonoBehaviour
 
     public void StoreItem()
     {
-        _currentItems++;
+        CurrentItems++;
         //Llamo al método que dispara el evento
         UI_Inventory_Updater();
     }
 
     public bool IsFull()
     {
-        return _currentItems == _maxItems;
+        return CurrentItems == MaxItems;
     }
 
     private void UI_Inventory_Updater()
     {
-        EventManager.instance.InventoryChange(_currentItems, _maxItems);
+        EventManager.instance.InventoryChange(CurrentItems, MaxItems);
     }
 }

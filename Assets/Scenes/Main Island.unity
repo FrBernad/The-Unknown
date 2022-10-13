@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0078897895, g: 0.015221684, b: 0.034471065, a: 1}
+  m_IndirectSpecularColor: {r: 0.00061066484, g: 0.0011781489, b: 0.002668039, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -730,6 +730,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 5926604212757797163, guid: 3fa1bc01dad644f6692fa83336fbea37, type: 3}
+      propertyPath: _characterStats
+      value: 
+      objectReference: {fileID: 11400000, guid: 3b745f6853b844b11b94d9993c27ba4d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fa1bc01dad644f6692fa83336fbea37, type: 3}
 --- !u!4 &272084499 stripped
@@ -5286,7 +5290,7 @@ MonoBehaviour:
   _entitiesSpawnPoints: []
   _audioSource: {fileID: 743911619}
   _monsterSpawnClip: {fileID: 8300000, guid: 486acc65465b74224b50aede0f3fcd08, type: 3}
-  _monsterRespawnTime: 360
+  _monsterRespawnTime: 20
   _monsterLifeTime: 20
 --- !u!4 &1524856515 stripped
 Transform:

@@ -5,8 +5,8 @@ namespace Commands
 {
     public class CmdMovement : ICommand
     {
-        private IMovable _movable;
-        private Vector3 _direction;
+        private readonly Vector3 _direction;
+        private readonly IMovable _movable;
 
         public CmdMovement(IMovable movable, Vector3 direction)
         {

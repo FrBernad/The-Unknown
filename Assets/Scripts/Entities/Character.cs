@@ -1,6 +1,6 @@
 ﻿using Commands;
-using EventQueues;
 using Controllers;
+using EventQueues;
 using Flyweight;
 using Managers;
 using UnityEngine;
@@ -9,14 +9,7 @@ namespace Entities
 {
     public class Character : MonoBehaviour
     {
-        public CharacterStats CharacterStats => _characterStats;
         [SerializeField] private CharacterStats _characterStats;
-
-        //Instancias
-        private MovementController _movementController;
-        private LifeController _lifeController;
-        private Inventory _inventory;
-        private Flashlight _flashlight;
 
         //Binding movements
 
@@ -35,7 +28,6 @@ namespace Entities
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundDistance = 0.3f;
         [SerializeField] private LayerMask groundMask;
-        private bool _isGrounded;
 
         [SerializeField] private AudioSource _interactionsAudioSource;
         [SerializeField] private AudioClip _pickupNoteAudioClip;
@@ -43,23 +35,31 @@ namespace Entities
 
         [SerializeField] private AudioSource _walkingAudioSource;
         [SerializeField] private AudioSource _sprintingAudioSource;
+        private CmdJump _cmdJump;
+        private CmdMovement _cmdMoveBack;
 
 
         //Commands
         private CmdMovement _cmdMoveForward;
-        private CmdMovement _cmdMoveBack;
         private CmdMovement _cmdMoveLeft;
         private CmdMovement _cmdMoveRight;
-        private CmdRotation _cmdRotation;
-        private CmdJump _cmdJump;
-        private CmdStartSprinting _cmdStartSprinting;
-        private CmdStopSprinting _cmdStopSprinting;
         private CmdPickUpLantern _cmdPickUpLantern;
         private CmdPickUpNote _cmdPickUpNote;
-        private CmdWin _cmdWin;
+        private CmdRotation _cmdRotation;
+        private CmdStartSprinting _cmdStartSprinting;
+        private CmdStopSprinting _cmdStopSprinting;
         private CmdSwitchLantern _cmdSwitchLantern;
+        private CmdWin _cmdWin;
+        private Flashlight _flashlight;
+        private Inventory _inventory;
+        private bool _isGrounded;
+        private LifeController _lifeController;
 
-        private bool hasFlashlight = false;
+        //Instancias
+        private MovementController _movementController;
+
+        private bool hasFlashlight;
+        public CharacterStats CharacterStats => _characterStats;
 
 
         private void Start()
@@ -72,7 +72,7 @@ namespace Entities
             _cmdMoveLeft = new CmdMovement(_movementController, Vector3.left);
             _cmdMoveRight = new CmdMovement(_movementController, Vector3.right);
             _cmdStartSprinting = new CmdStartSprinting(_lifeController, _movementController);
-            _cmdStopSprinting = new CmdStopSprinting(_lifeController, _movementController);
+            _cmdStopSprinting = new CmdStopSprinting(_movementController);
             _cmdJump = new CmdJump(_movementController, Vector3.up);
             _cmdWin = new CmdWin();
 
@@ -87,19 +87,11 @@ namespace Entities
             UpdateFlashlightState();
         }
 
-        private void UpdateFlashlightState()
-        {
-            if (hasFlashlight && Input.GetKeyDown(switchFlashlight))
-            {
-                EventQueueManager.instance.AddCommand(_cmdSwitchLantern);
-            }
-        }
-
         private void OnTriggerEnter(Collider collision)
         {
             if (collision.gameObject.CompareTag("Note"))
             {
-                Note note = collision.GetComponent<Note>();
+                var note = collision.GetComponent<Note>();
                 _cmdPickUpNote = new CmdPickUpNote(note, _inventory, _interactionsAudioSource, _pickupNoteAudioClip);
                 UpdateUIPanel("Press G to pickup");
             }
@@ -108,41 +100,16 @@ namespace Entities
             {
                 if (_inventory.IsFull()) EventQueueManager.instance.AddCommand(_cmdWin);
                 else
-                {
                     UpdateUIPanel("You must collect all notes\n before returning to the boat");
-                }
             }
 
             if (collision.gameObject.CompareTag("Flashlight"))
             {
                 _flashlight = gameObject.GetComponentInChildren<Flashlight>(true);
-                Flashlight floorFlashlight = collision.GetComponent<Flashlight>();
+                var floorFlashlight = collision.GetComponent<Flashlight>();
                 _cmdPickUpLantern = new CmdPickUpLantern(floorFlashlight, _flashlight, _interactionsAudioSource,
                     _pickupFlashlightAudioClip);
                 UpdateUIPanel("Press G to pickup");
-            }
-        }
-
-        void OnTriggerStay(Collider collision)
-        {
-            if (collision.gameObject.CompareTag("Note"))
-            {
-                if (Input.GetKey(pickup))
-                {
-                    EventQueueManager.instance.AddCommand(_cmdPickUpNote);
-                    UpdateUIPanel(null);
-                }
-            }
-
-            if (collision.gameObject.CompareTag("Flashlight"))
-            {
-                if (Input.GetKey(pickup))
-                {
-                    EventQueueManager.instance.AddCommand(_cmdPickUpLantern);
-                    hasFlashlight = true;
-                    _cmdSwitchLantern = new CmdSwitchLantern(_flashlight);
-                    UpdateUIPanel(null);
-                }
             }
         }
 
@@ -150,9 +117,32 @@ namespace Entities
         {
             if (collision.gameObject.CompareTag("Note") || collision.gameObject.CompareTag("Flashlight") ||
                 collision.gameObject.CompareTag("Boat"))
-            {
                 UpdateUIPanel(null);
-            }
+        }
+
+        private void OnTriggerStay(Collider collision)
+        {
+            if (collision.gameObject.CompareTag("Note"))
+                if (Input.GetKey(pickup))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdPickUpNote);
+                    UpdateUIPanel(null);
+                }
+
+            if (collision.gameObject.CompareTag("Flashlight"))
+                if (Input.GetKey(pickup))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdPickUpLantern);
+                    hasFlashlight = true;
+                    _cmdSwitchLantern = new CmdSwitchLantern(_flashlight);
+                    UpdateUIPanel(null);
+                }
+        }
+
+        private void UpdateFlashlightState()
+        {
+            if (hasFlashlight && Input.GetKeyDown(switchFlashlight))
+                EventQueueManager.instance.AddCommand(_cmdSwitchLantern);
         }
 
         private void UpdateMovementAudio()
@@ -180,7 +170,7 @@ namespace Entities
 
         private void UpdateMovement()
         {
-            float mouseX = Input.GetAxis("Mouse X");
+            var mouseX = Input.GetAxis("Mouse X");
             _cmdRotation = new CmdRotation(_movementController, Vector3.up * mouseX);
             EventQueueManager.instance.AddMovementCommand(_cmdRotation);
 
@@ -194,10 +184,7 @@ namespace Entities
             }
             else
             {
-                if (_lifeController.CurrentStamina < _lifeController.MaxStamina)
-                {
-                    _lifeController.increaseStamina(0.5f);
-                }
+                if (_lifeController.CurrentStamina < _lifeController.MaxStamina) _lifeController.increaseStamina(0.5f);
             }
 
             if (Input.GetKeyUp(sprint)) EventQueueManager.instance.AddCommand(_cmdStopSprinting);

@@ -11,7 +11,7 @@ namespace Entities
         [SerializeField] private float _speed = 0.1F;
         [SerializeField] private float _radius = 3;
 
-        void Update()
+        private void Update()
         {
             var x = (float)Math.Cos(-Time.time * _speed) * _radius;
             var y = _pointLight.transform.localPosition.y;

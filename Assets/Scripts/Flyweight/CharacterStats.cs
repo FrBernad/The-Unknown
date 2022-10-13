@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Flyweight
 {
@@ -16,7 +17,7 @@ namespace Flyweight
         public float JumpHeight => _characterStatValues.JumpHeight;
     }
 
-    [System.Serializable]
+    [Serializable]
     public struct CharacterStatValues
     {
         public float MaxStamina;

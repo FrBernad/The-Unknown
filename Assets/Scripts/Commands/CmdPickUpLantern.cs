@@ -1,15 +1,14 @@
 using Interfaces;
-using Managers;
 using UnityEngine;
 
 namespace Commands
 {
     public class CmdPickUpLantern : ICommand
     {
-        private Flashlight _floorFlashlight;
-        private Flashlight _flashlight;
-        private AudioSource _audioSource;
-        private AudioClip _pickupFlashlightClip;
+        private readonly AudioSource _audioSource;
+        private readonly Flashlight _flashlight;
+        private readonly Flashlight _floorFlashlight;
+        private readonly AudioClip _pickupFlashlightClip;
 
         public CmdPickUpLantern(Flashlight floorFlashlight, Flashlight flashlight, AudioSource audioSource,
             AudioClip pickupFlashlightClip)

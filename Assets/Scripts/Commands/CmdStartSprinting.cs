@@ -5,15 +5,13 @@ namespace Commands
 {
     public class CmdStartSprinting : ICommand
     {
-        private LifeController _lifeController;
-        private MovementController _movementController;
-        private bool _sprint;
+        private readonly LifeController _lifeController;
+        private readonly MovementController _movementController;
 
         public CmdStartSprinting(LifeController lifeController, MovementController movementController)
         {
             _lifeController = lifeController;
             _movementController = movementController;
-            _sprint = true;
         }
 
         public void Execute()

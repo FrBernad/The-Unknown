@@ -20,14 +20,14 @@ namespace Managers
 
 
         //Corutina: método base que vamos a llamar en el inicio de la corutina
-        IEnumerator LoadAsync()
+        private IEnumerator LoadAsync()
         {
-            AsyncOperation operation = SceneManager.LoadSceneAsync(_targetScene);
+            var operation = SceneManager.LoadSceneAsync(_targetScene);
             operation.allowSceneActivation = false; //Se tiene el control cuando se quiere pasar a la proxima scene
 
             while (!operation.isDone)
             {
-                float progress = operation.progress;
+                var progress = operation.progress;
                 _progressBar.fillAmount = progress;
 
                 _progressValue.text = $"Loading... {Convert.ToInt16(progress * 100)}%";

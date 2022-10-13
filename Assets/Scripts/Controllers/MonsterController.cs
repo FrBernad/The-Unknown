@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Commands;
 using EventQueues;
-using Managers;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,9 +8,9 @@ namespace Controllers
     public class MonsterController : MonoBehaviour
     {
         private NavMeshAgent _agent;
-        private Transform _objective;
-        private AudioSource _nearbyAudioSource;
         private CmdLose _cmdLose;
+        private AudioSource _nearbyAudioSource;
+        private Transform _objective;
 
         private void Awake()
         {
@@ -43,19 +40,13 @@ namespace Controllers
 
         private void UpdateNearbySound()
         {
-            bool isNearby = (_objective.position - transform.position).magnitude <= _nearbyAudioSource.maxDistance;
+            var isNearby = (_objective.position - transform.position).magnitude <= _nearbyAudioSource.maxDistance;
 
             _nearbyAudioSource.enabled = isNearby;
 
-            if (isNearby && !_nearbyAudioSource.isPlaying)
-            {
-                _nearbyAudioSource.Play();
-            }
+            if (isNearby && !_nearbyAudioSource.isPlaying) _nearbyAudioSource.Play();
 
-            if (!isNearby && _nearbyAudioSource.isPlaying)
-            {
-                _nearbyAudioSource.Stop();
-            }
+            if (!isNearby && _nearbyAudioSource.isPlaying) _nearbyAudioSource.Stop();
         }
     }
 }

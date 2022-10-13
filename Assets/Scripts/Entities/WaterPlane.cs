@@ -16,18 +16,12 @@ namespace Entities
 
         private void OnTriggerEnter(Collider collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                StartCoroutine(DoDelayed(() => _plane.SetActive(true)));
-            }
+            if (collision.gameObject.CompareTag("Player")) StartCoroutine(DoDelayed(() => _plane.SetActive(true)));
         }
 
         private void OnTriggerExit(Collider collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
-            {
-                StartCoroutine(DoDelayed(() => _plane.SetActive(false)));
-            }
+            if (collision.gameObject.CompareTag("Player")) StartCoroutine(DoDelayed(() => _plane.SetActive(false)));
         }
 
         private IEnumerator DoDelayed(Action action)

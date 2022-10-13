@@ -4,7 +4,7 @@ namespace Commands
 {
     public class CmdSwitchLantern : ICommand
     {
-        private Flashlight _flashlight;
+        private readonly Flashlight _flashlight;
 
         public CmdSwitchLantern(Flashlight flashlight)
         {

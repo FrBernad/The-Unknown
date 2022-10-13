@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using Managers;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -36,7 +34,7 @@ public class GameManager : MonoBehaviour
         {
             yield return new WaitForSeconds(_monsterRespawnTime);
 
-            GameObject monster = SpawnMonster();
+            var monster = SpawnMonster();
 
             yield return new WaitForSeconds(_monsterLifeTime);
 
@@ -46,26 +44,23 @@ public class GameManager : MonoBehaviour
 
     private void SetSpawnPoints()
     {
-        GameObject spawnPoints = GameObject.Find("EntitiesSpawnPoints");
-        int totalSpawnPoints = spawnPoints.transform.childCount;
+        var spawnPoints = GameObject.Find("EntitiesSpawnPoints");
+        var totalSpawnPoints = spawnPoints.transform.childCount;
 
         _entitiesSpawnPoints = new List<Transform>(totalSpawnPoints);
 
-        for (int i = 0; i < totalSpawnPoints; i++)
-        {
-            _entitiesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
-        }
+        for (var i = 0; i < totalSpawnPoints; i++) _entitiesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
     }
 
     private void SetSpawnPosition(GameObject obj)
     {
-        int spawnPoint = Random.Range(0, _entitiesSpawnPoints.Count);
+        var spawnPoint = Random.Range(0, _entitiesSpawnPoints.Count);
         obj.transform.position = _entitiesSpawnPoints[spawnPoint].position;
     }
 
     public GameObject SpawnMonster()
     {
-        GameObject monster = Instantiate(_monster);
+        var monster = Instantiate(_monster);
         SetSpawnPosition(_monster);
         _audioSource.PlayOneShot(_monsterSpawnClip);
         return monster;

@@ -1,16 +1,14 @@
-using System;
 using Interfaces;
-using Managers;
 using UnityEngine;
 
 namespace Commands
 {
     public class CmdPickUpNote : ICommand
     {
-        private Note _note;
-        private Inventory _inventory;
-        private AudioSource _audioSource;
-        private AudioClip _pickupAudioClip;
+        private readonly AudioSource _audioSource;
+        private readonly Inventory _inventory;
+        private readonly Note _note;
+        private readonly AudioClip _pickupAudioClip;
 
         public CmdPickUpNote(Note note, Inventory inventory, AudioSource audioSource, AudioClip pickupAudioClip)
         {

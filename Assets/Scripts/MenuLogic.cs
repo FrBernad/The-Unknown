@@ -4,9 +4,9 @@ namespace DefaultNamespace
 {
     public class MenuLogic : MonoBehaviour
     {
-        [SerializeField] private GameObject mainMenu = null;
-        [SerializeField] private GameObject controlsMenu = null;
-        [SerializeField] private GameObject informationMenu = null;
+        [SerializeField] private GameObject mainMenu;
+        [SerializeField] private GameObject controlsMenu;
+        [SerializeField] private GameObject informationMenu;
 
         [SerializeField] private AudioClip backClip;
         [SerializeField] private AudioClip clickClip;

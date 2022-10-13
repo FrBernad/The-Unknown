@@ -4,19 +4,22 @@ namespace Managers
 {
     public class GlobalData : MonoBehaviour
     {
-        static public GlobalData instance;
+        public static GlobalData instance;
+        [SerializeField] private bool _isVictory;
 
         public bool IsVictory => _isVictory;
-        [SerializeField] private bool _isVictory;
 
         private void Awake()
         {
-            if (instance != null) Destroy(this.gameObject);
+            if (instance != null) Destroy(gameObject);
             instance = this;
 
             DontDestroyOnLoad(this);
         }
 
-        public void SetVictoryField(bool isVictory) => _isVictory = isVictory;
+        public void SetVictoryField(bool isVictory)
+        {
+            _isVictory = isVictory;
+        }
     }
 }

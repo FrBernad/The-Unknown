@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Managers;
+using Interfaces;
 using UnityEngine;
 
-public class Note : MonoBehaviour
+public class Note : MonoBehaviour, IPickable
 {
     public void Pickup()
     {

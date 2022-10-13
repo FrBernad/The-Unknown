@@ -1,4 +1,3 @@
-using System;
 using Entities;
 using Managers;
 using UnityEngine;
@@ -7,8 +6,8 @@ namespace Controllers
 {
     public class LifeController : MonoBehaviour
     {
-        public float MaxStamina => GetComponent<Character>().CharacterStats.MaxStamina;
         [SerializeField] private float _currentStamina;
+        public float MaxStamina => GetComponent<Character>().CharacterStats.MaxStamina;
 
         public float CurrentStamina => _currentStamina;
 
@@ -21,10 +20,7 @@ namespace Controllers
         public void decreaseStamina(float stamina)
         {
             _currentStamina -= stamina;
-            if (_currentStamina < 0)
-            {
-                _currentStamina = 0;
-            }
+            if (_currentStamina < 0) _currentStamina = 0;
 
             UpdateStaminaUI();
         }
@@ -33,10 +29,7 @@ namespace Controllers
         {
             _currentStamina += stamina;
 
-            if (_currentStamina > MaxStamina)
-            {
-                _currentStamina = MaxStamina;
-            }
+            if (_currentStamina > MaxStamina) _currentStamina = MaxStamina;
 
             UpdateStaminaUI();
         }

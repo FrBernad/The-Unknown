@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Controllers
@@ -11,7 +10,7 @@ namespace Controllers
         private void Update()
         {
             (Vector3 pos, Quaternion rot) result = _spline.PositionOnSpline(_targetPosition.position);
-            Transform tr = transform;
+            var tr = transform;
             tr.position = result.pos;
             tr.rotation = result.rot;
         }
