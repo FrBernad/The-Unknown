@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour
 
     public bool IsFull()
     {
-        return CurrentItems == MaxItems;
+        return CurrentItems >= MaxItems;
     }
 
     private void UI_Inventory_Updater()
