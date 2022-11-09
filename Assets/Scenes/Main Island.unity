@@ -9763,7 +9763,7 @@ MonoBehaviour:
   _entitiesSpawnPoints: []
   _audioSource: {fileID: 743911619}
   _monsterSpawnClip: {fileID: 8300000, guid: 486acc65465b74224b50aede0f3fcd08, type: 3}
-  _monsterRespawnTime: 500
+  _monsterRespawnTime: 20
   _monsterLifeTime: 25
   _screamerAudioClip: {fileID: 8300000, guid: a4a23f42f6a114215b4a082d07e64f46, type: 3}
   _screamerObject: {fileID: 1647630949}
