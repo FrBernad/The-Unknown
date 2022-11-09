@@ -2,11 +2,11 @@ using Interfaces;
 
 namespace Commands
 {
-    public class CmdSwitchLantern : ICommand
+    public class CmdSwitchFlashlight : ICommand
     {
         private readonly Flashlight _flashlight;
 
-        public CmdSwitchLantern(Flashlight flashlight)
+        public CmdSwitchFlashlight(Flashlight flashlight)
         {
             _flashlight = flashlight;
         }

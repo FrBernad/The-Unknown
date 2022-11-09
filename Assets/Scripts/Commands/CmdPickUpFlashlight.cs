@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace Commands
 {
-    public class CmdPickUpLantern : ICommand
+    public class CmdPickUpFlashlight : ICommand
     {
         private readonly AudioSource _audioSource;
         private readonly Flashlight _flashlight;
         private readonly Flashlight _floorFlashlight;
         private readonly AudioClip _pickupFlashlightClip;
 
-        public CmdPickUpLantern(Flashlight floorFlashlight, Flashlight flashlight, AudioSource audioSource,
+        public CmdPickUpFlashlight(Flashlight floorFlashlight, Flashlight flashlight, AudioSource audioSource,
             AudioClip pickupFlashlightClip)
         {
             _floorFlashlight = floorFlashlight;

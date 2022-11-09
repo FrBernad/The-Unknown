@@ -1,4 +1,5 @@
 ﻿using Interfaces;
+using Managers;
 using UnityEngine;
 
 public class Flashlight : MonoBehaviour, IPickable
@@ -17,6 +18,7 @@ public class Flashlight : MonoBehaviour, IPickable
 
     public void Pickup()
     {
+        UpdateUIPanel(null);
         Destroy(gameObject);
     }
 
@@ -25,5 +27,10 @@ public class Flashlight : MonoBehaviour, IPickable
         isOn = !isOn;
         _light.SetActive(isOn);
         _audioSource.Play();
+    }
+
+    private void UpdateUIPanel(string message)
+    {
+        EventManager.instance.UIPanelUpdate(message);
     }
 }
