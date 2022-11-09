@@ -139,3 +139,4 @@ pom.xml.tag
 Assets/*
 !Assets/Scripts
 !Assets/Scenes
+!Assets/Animations
