@@ -6,10 +6,14 @@ using UnityEngine;
 public class ChairAnimationController : MonoBehaviour
 {
     private Animator _animator;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip audioClip;
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = audioClip;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -17,6 +21,7 @@ public class ChairAnimationController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             SetAnimatorParameters(true);
+            audioSource.Play();
         }
     }
 
@@ -25,6 +30,7 @@ public class ChairAnimationController : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             SetAnimatorParameters(false);
+            audioSource.Stop();
         }
     }
 

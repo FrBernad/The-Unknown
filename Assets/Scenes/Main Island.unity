@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.00094407896, g: 0.0018747638, b: 0.0042793923, a: 1}
+  m_IndirectSpecularColor: {r: 0.00061066484, g: 0.0011781489, b: 0.002668039, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1278,43 +1278,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -79.117004
+      value: -82.284
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.4359999
+      value: 4.3810005
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -34.694
+      value: -31.194
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99963826
+      value: 0.73003155
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.02363503
+      value: 0.6800777
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.004728677
+      value: 0.059806176
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.011937255
+      value: -0.03117006
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -2.715
+      value: 85.333
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 359.49
+      value: 393.515
       objectReference: {fileID: 0}
     - target: {fileID: 2222622349776524546, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -361.356
+      value: -333.868
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c3119ba8d5684db989ed0bfba666aff, type: 3}
@@ -9569,7 +9569,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -61.99945, y: -411}
+  m_AnchoredPosition: {x: -61.99951, y: -411}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1486584318
@@ -10704,22 +10704,102 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 487332, guid: 6343c751e9aa748478696f15afed9481, type: 3}
   m_PrefabInstance: {fileID: 1845867014}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &1845867019
-Rigidbody:
+--- !u!82 &1845867019
+AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1845867015}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 4
+  MaxDistance: 10
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &1845867020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10732,6 +10812,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91437964afe4b451d8696eb6a84195e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 1845867019}
+  audioClip: {fileID: 8300000, guid: afb520840241949e99c409f38ae464c6, type: 3}
 --- !u!135 &1845867021
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10744,7 +10826,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 8
-  m_Center: {x: 0, y: 0, z: 2.11}
+  m_Center: {x: 0, y: 0, z: 2}
 --- !u!1 &1852712747
 GameObject:
   m_ObjectHideFlags: 0
