@@ -129,7 +129,7 @@ namespace Entities
                 Collider collider = hitData.collider;
                 if (collider.CompareTag("Note"))
                 {
-                    var note = collider.GetComponent<Note>();
+                    var note = collider.GetComponent<Note.Note>();
                     _cmdPickUpNote = new CmdPickUpNote(note, _inventory, interactionsAudioSource, pickupNoteAudioClip);
                     _contactWithNote = true;
                 }

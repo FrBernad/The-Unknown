@@ -1,3 +1,4 @@
+using Entities.Note;
 using Interfaces;
 using UnityEngine;
 

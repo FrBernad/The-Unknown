@@ -1,7 +1,7 @@
 using Entities;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace Entities.Note
 {
     public class NoteOutline : MonoBehaviour
     {

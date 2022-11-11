@@ -2,16 +2,19 @@ using Interfaces;
 using Managers;
 using UnityEngine;
 
-public class Note : MonoBehaviour, IPickable
+namespace Entities.Note
 {
-    public void Pickup()
+    public class Note : MonoBehaviour, IPickable
     {
-        UpdateUIPanel(null);
-        Destroy(gameObject);
-    }
+        public void Pickup()
+        {
+            UpdateUIPanel(null);
+            Destroy(gameObject);
+        }
 
-    private void UpdateUIPanel(string message)
-    {
-        EventManager.instance.UIPanelUpdate(message);
+        private void UpdateUIPanel(string message)
+        {
+            EventManager.instance.UIPanelUpdate(message);
+        }
     }
 }
