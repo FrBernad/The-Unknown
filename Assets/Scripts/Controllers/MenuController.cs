@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Controllers
 {
-    public class MenuLogic : MonoBehaviour
+    public class MenuController : MonoBehaviour
     {
         [SerializeField] private GameObject mainMenu;
         [SerializeField] private GameObject controlsMenu;
