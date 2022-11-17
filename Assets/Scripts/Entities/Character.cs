@@ -1,7 +1,7 @@
 ﻿using System;
 using Commands;
 using Controllers;
-using EventQueues;
+using EventQueue;
 using Flyweight;
 using Managers;
 using UnityEngine;

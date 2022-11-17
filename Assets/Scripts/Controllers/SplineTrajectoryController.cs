@@ -1,8 +1,9 @@
+using Entities;
 using UnityEngine;
 
 namespace Controllers
 {
-    public class SplineTrayectoryController : MonoBehaviour
+    public class SplineTrajectoryController : MonoBehaviour
     {
         [SerializeField] private Spline _spline;
         [SerializeField] private Transform _targetPosition;

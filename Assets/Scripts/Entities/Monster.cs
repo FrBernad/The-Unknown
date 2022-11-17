@@ -1,9 +1,9 @@
 using Commands;
-using EventQueues;
+using EventQueue;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Controllers
+namespace Entities
 {
     public class Monster : MonoBehaviour
     {

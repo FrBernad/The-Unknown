@@ -1,28 +1,31 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ScenesUIManager : MonoBehaviour
+namespace Managers
 {
-    public static ScenesUIManager instance;
-
-    private void Awake()
+    public class ScenesUIManager : MonoBehaviour
     {
-        if (instance != null) Destroy(gameObject);
-        instance = this;
-    }
+        public static ScenesUIManager instance;
 
-    public void LoadMenuScene()
-    {
-        SceneManager.LoadScene("Main Menu");
-    }
+        private void Awake()
+        {
+            if (instance != null) Destroy(gameObject);
+            instance = this;
+        }
 
-    public void LoadLevelScene()
-    {
-        SceneManager.LoadScene("Loading Screen");
-    }
+        public void LoadMenuScene()
+        {
+            SceneManager.LoadScene("Main Menu");
+        }
 
-    public void CloseGame()
-    {
-        Application.Quit();
+        public void LoadLevelScene()
+        {
+            SceneManager.LoadScene("Loading Screen");
+        }
+
+        public void CloseGame()
+        {
+            Application.Quit();
+        }
     }
 }

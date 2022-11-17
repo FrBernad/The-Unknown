@@ -1,5 +1,5 @@
 ﻿using Entities;
-using Interfaces;
+using Strategy;
 using UnityEngine;
 
 namespace Controllers

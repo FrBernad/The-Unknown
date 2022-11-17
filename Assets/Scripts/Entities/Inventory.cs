@@ -1,31 +1,34 @@
 using Managers;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+namespace Entities
 {
-    public int MaxItems { get; } = 8;
-
-    public int CurrentItems { get; private set; }
-
-    private void Start()
+    public class Inventory : MonoBehaviour
     {
-        UI_Inventory_Updater();
-    }
+        public int MaxItems => 8;
 
-    public void StoreItem()
-    {
-        CurrentItems++;
-        //Llamo al método que dispara el evento
-        UI_Inventory_Updater();
-    }
+        public int CurrentItems { get; private set; }
 
-    public bool IsFull()
-    {
-        return CurrentItems >= MaxItems;
-    }
+        private void Start()
+        {
+            UI_Inventory_Updater();
+        }
 
-    private void UI_Inventory_Updater()
-    {
-        EventManager.instance.InventoryChange(CurrentItems, MaxItems);
+        public void StoreItem()
+        {
+            CurrentItems++;
+            //Llamo al método que dispara el evento
+            UI_Inventory_Updater();
+        }
+
+        public bool IsFull()
+        {
+            return CurrentItems >= MaxItems;
+        }
+
+        private void UI_Inventory_Updater()
+        {
+            EventManager.instance.InventoryChange(CurrentItems, MaxItems);
+        }
     }
 }

@@ -1,8 +1,7 @@
-using Managers;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace DefaultNamespace
+namespace Managers
 {
     public class GameOver : MonoBehaviour
     {

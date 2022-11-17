@@ -1,36 +1,39 @@
-﻿using Interfaces;
-using Managers;
+﻿using Managers;
+using Strategy;
 using UnityEngine;
 
-public class Flashlight : MonoBehaviour, IPickable
+namespace Entities
 {
-    private AudioSource _audioSource;
-    private GameObject _light;
-    private bool isOn = true;
-
-    private void Start()
+    public class Flashlight : MonoBehaviour, IPickable
     {
-        _light = transform.GetChild(0).gameObject;
-        _light.SetActive(isOn);
+        private AudioSource _audioSource;
+        private GameObject _light;
+        private bool _isOn = true;
 
-        _audioSource = gameObject.GetComponent<AudioSource>();
-    }
+        private void Start()
+        {
+            _light = transform.GetChild(0).gameObject;
+            _light.SetActive(_isOn);
 
-    public void Pickup()
-    {
-        UpdateUIPanel(null);
-        Destroy(gameObject);
-    }
+            _audioSource = gameObject.GetComponent<AudioSource>();
+        }
 
-    public void Switch()
-    {
-        isOn = !isOn;
-        _light.SetActive(isOn);
-        _audioSource.Play();
-    }
+        public void Pickup()
+        {
+            UpdateUIPanel(null);
+            Destroy(gameObject);
+        }
 
-    private void UpdateUIPanel(string message)
-    {
-        EventManager.instance.UIPanelUpdate(message);
+        public void Switch()
+        {
+            _isOn = !_isOn;
+            _light.SetActive(_isOn);
+            _audioSource.Play();
+        }
+
+        private void UpdateUIPanel(string message)
+        {
+            EventManager.instance.UIPanelUpdate(message);
+        }
     }
 }

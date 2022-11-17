@@ -1,3 +1,4 @@
+using Managers;
 using UnityEngine;
 
 namespace Controllers
@@ -12,7 +13,6 @@ namespace Controllers
         [SerializeField] private AudioClip clickClip;
 
         private AudioSource _audioSource;
-
 
         private GameObject _currentMenu;
 

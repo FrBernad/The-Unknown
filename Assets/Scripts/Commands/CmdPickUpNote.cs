@@ -1,5 +1,6 @@
+using Entities;
 using Entities.Note;
-using Interfaces;
+using Strategy;
 using UnityEngine;
 
 namespace Commands

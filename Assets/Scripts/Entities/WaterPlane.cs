@@ -1,4 +1,3 @@
-using DefaultNamespace.Utils;
 using UnityEngine;
 
 namespace Entities
@@ -16,13 +15,13 @@ namespace Entities
         private void OnTriggerEnter(Collider collision)
         {
             if (collision.gameObject.CompareTag("Player"))
-                StartCoroutine(Utils.DoDelayed(0f, () => _plane.SetActive(true)));
+                StartCoroutine(Utils.Utils.DoDelayed(0f, () => _plane.SetActive(true)));
         }
 
         private void OnTriggerExit(Collider collision)
         {
             if (collision.gameObject.CompareTag("Player"))
-                StartCoroutine(Utils.DoDelayed(0, () => _plane.SetActive(false)));
+                StartCoroutine(Utils.Utils.DoDelayed(0, () => _plane.SetActive(false)));
         }
     }
 }

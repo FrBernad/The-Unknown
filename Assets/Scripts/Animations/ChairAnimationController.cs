@@ -1,41 +1,41 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ChairAnimationController : MonoBehaviour
+namespace Animations
 {
-    private Animator _animator;
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip audioClip;
-
-    private void Start()
+    public class ChairAnimationController : MonoBehaviour
     {
-        _animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = audioClip;
-    }
+        private Animator _animator;
+        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioClip audioClip;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        private void Start()
         {
-            SetAnimatorParameters(true);
-            audioSource.Play();
+            _animator = GetComponent<Animator>();
+            audioSource = GetComponent<AudioSource>();
+            audioSource.clip = audioClip;
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
+        private void OnTriggerEnter(Collider other)
         {
-            SetAnimatorParameters(false);
-            audioSource.Stop();
+            if (other.gameObject.CompareTag("Player"))
+            {
+                SetAnimatorParameters(true);
+                audioSource.Play();
+            }
         }
-    }
 
-    private void SetAnimatorParameters(bool performAnimation)
-    {
-        _animator.SetBool("IsNear", performAnimation);
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                SetAnimatorParameters(false);
+                audioSource.Stop();
+            }
+        }
+
+        private void SetAnimatorParameters(bool performAnimation)
+        {
+            _animator.SetBool("IsNear", performAnimation);
+        }
     }
 }

@@ -1,5 +1,5 @@
-using Interfaces;
 using Managers;
+using Strategy;
 using UnityEngine;
 
 namespace Entities.Note

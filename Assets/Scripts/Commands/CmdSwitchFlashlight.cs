@@ -1,4 +1,5 @@
-using Interfaces;
+using Entities;
+using Strategy;
 
 namespace Commands
 {

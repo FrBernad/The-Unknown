@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Interfaces;
+using Strategy;
 using UnityEngine;
 
-namespace EventQueues
+namespace EventQueue
 {
     public class EventQueueManager : MonoBehaviour
     {
