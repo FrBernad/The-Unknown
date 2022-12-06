@@ -1,5 +1,6 @@
 using System;
 using Strategy;
+using Entities;
 using UnityEngine;
 
 namespace Managers
@@ -35,7 +36,7 @@ namespace Managers
         //Evento
         public event Action<int, int> OnInventoryChange;
         public event Action<float> OnStaminaChange;
-
+        public event Action<Ambience> OnChangeAmbience;
         public event Action<string> OnUIPanelUpdate;
         public event Action<ChargeStatus> OnChargeChange;
 
@@ -66,6 +67,11 @@ namespace Managers
         public void StartConsumingBattery(bool consumeBattery)
         {
             if (OnStartConsumingBattery != null) OnStartConsumingBattery(consumeBattery);
+        }
+
+        public void ChangeAmbience(Ambience ambience)
+        {
+            if (OnChangeAmbience != null) OnChangeAmbience(ambience);
         }
 
         #endregion

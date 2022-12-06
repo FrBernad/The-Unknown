@@ -211,17 +211,25 @@ namespace Entities
 
         private void UpdateMovementAudio()
         {
-            if (Input.GetKey(moveForward) || Input.GetKey(moveBackward) || Input.GetKey(moveLeft) ||
-                Input.GetKey(moveRight))
+            if (_isGrounded)
             {
-                walkingAudioSource.enabled = true;
-                if (_movementController.Sprinting)
+                if (Input.GetKey(moveForward) || Input.GetKey(moveBackward) || Input.GetKey(moveLeft) ||
+                    Input.GetKey(moveRight))
                 {
-                    walkingAudioSource.enabled = false;
-                    sprintingAudioSource.enabled = true;
+                    walkingAudioSource.enabled = true;
+                    if (_movementController.Sprinting)
+                    {
+                        walkingAudioSource.enabled = false;
+                        sprintingAudioSource.enabled = true;
+                    }
+                    else
+                    {
+                        sprintingAudioSource.enabled = false;
+                    }
                 }
                 else
                 {
+                    walkingAudioSource.enabled = false;
                     sprintingAudioSource.enabled = false;
                 }
             }

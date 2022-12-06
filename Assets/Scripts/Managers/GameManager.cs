@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static Entities.Ambience;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
@@ -9,8 +12,12 @@ namespace Managers
     {
         [SerializeField] private GameObject _monster;
         [SerializeField] private List<Transform> _entitiesSpawnPoints;
-        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioSource _globalAudioSource;
         [SerializeField] private AudioClip _monsterSpawnClip;
+
+        [SerializeField] private AudioSource _ambienceAudioSource;
+        [SerializeField] private AudioClip _forestAmbienceAudioClip;
+        [SerializeField] private AudioClip _caveAmbienceAudioClip;
 
         [SerializeField] private int _monsterRespawnTime = 10;
         [SerializeField] private int _monsterLifeTime = 30;
@@ -24,6 +31,7 @@ namespace Managers
             StartCoroutine(MonsterLifecycle());
             EventManager.instance.OnGameOver += OnGameOver;
             EventManager.instance.OnStartConsumingBattery += OnStartConsumingBattery;
+            EventManager.instance.OnChangeAmbience += OnChangeAmbience;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -64,20 +72,20 @@ namespace Managers
             obj.transform.position = _entitiesSpawnPoints[spawnPoint].position;
         }
 
-        public GameObject SpawnMonster()
+        private GameObject SpawnMonster()
         {
             var monster = Instantiate(_monster);
             SetSpawnPosition(_monster);
-            _audioSource.PlayOneShot(_monsterSpawnClip);
+            _globalAudioSource.PlayOneShot(_monsterSpawnClip);
             return monster;
         }
 
-        public void OnGameOver(bool isVictory)
+        private void OnGameOver(bool isVictory)
         {
             GlobalData.instance.SetVictoryField(isVictory);
             if (!isVictory)
             {
-                _audioSource.PlayOneShot(_screamerAudioClip);
+                _globalAudioSource.PlayOneShot(_screamerAudioClip);
                 _screamerObject.SetActive(true);
                 StartCoroutine(Utils.Utils.DoDelayed(2.5f, () => SceneManager.LoadScene("Game Over")));
             }
@@ -91,6 +99,21 @@ namespace Managers
         {
             Flashlight flashlight = GameObject.FindWithTag("Player").GetComponentInChildren<Flashlight>(true);
             flashlight.SetIsChargeable(consumeBattery);
+        }
+
+        private void OnChangeAmbience(Ambience ambience)
+        {
+            switch (ambience)
+            {
+                case Forest:
+                    _ambienceAudioSource.clip = _forestAmbienceAudioClip;
+                    _ambienceAudioSource.Play();
+                    break;
+                case Cave:
+                    _ambienceAudioSource.clip = _caveAmbienceAudioClip;
+                    _ambienceAudioSource.Play();
+                    break;
+            }
         }
     }
 }
