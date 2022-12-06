@@ -121,22 +121,21 @@ namespace Entities
 
         private void UpdatePickableRaycast(Ray ray)
         {
-            RaycastHit hitData;
             Debug.DrawRay(ray.origin, ray.direction * pickupDistance, color: Color.red);
-            if (Physics.Raycast(ray, out hitData, pickupDistance, pickableLayer))
+            if (Physics.Raycast(ray, out var hitData, pickupDistance, pickableLayer))
             {
                 UpdateUIPanel("Press G to pickup");
-                Collider collider = hitData.collider;
-                if (collider.CompareTag("Note"))
+                Collider c = hitData.collider;
+                if (c.CompareTag("Note"))
                 {
-                    var note = collider.GetComponent<Note.Note>();
+                    var note = c.GetComponent<Note.Note>();
                     _cmdPickUpNote = new CmdPickUpNote(note, _inventory, interactionsAudioSource, pickupNoteAudioClip);
                     _contactWithNote = true;
                 }
-                else if (collider.CompareTag("Flashlight"))
+                else if (c.CompareTag("Flashlight"))
                 {
                     _flashlight = gameObject.GetComponentInChildren<Flashlight>(true);
-                    var floorFlashlight = collider.GetComponent<Flashlight>();
+                    var floorFlashlight = c.GetComponent<Flashlight>();
                     _cmdPickUpFlashlight = new CmdPickUpFlashlight(floorFlashlight, _flashlight,
                         interactionsAudioSource,
                         pickupFlashlightAudioClip);
