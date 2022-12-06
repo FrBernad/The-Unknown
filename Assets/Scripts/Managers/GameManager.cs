@@ -89,8 +89,8 @@ namespace Managers
 
         public void OnStartConsumingBattery(bool consumeBattery)
         {
-            Flashlight flashlight = GameObject.FindWithTag("Character").GetComponent<Flashlight>();
-            flashlight.setIsChargeable(consumeBattery);
+            Flashlight flashlight = GameObject.FindWithTag("Player").GetComponentInChildren<Flashlight>(true);
+            flashlight.SetIsChargeable(consumeBattery);
         }
     }
 }

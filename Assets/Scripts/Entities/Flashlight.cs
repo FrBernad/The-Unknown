@@ -94,7 +94,7 @@ namespace Entities
             return _currentCharge > 0;
         }
 
-        public void setIsChargeable(bool isChargeable)
+        public void SetIsChargeable(bool isChargeable)
         {
             _isChargeable = isChargeable;
             if (_isOn)
