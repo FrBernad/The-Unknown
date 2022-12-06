@@ -1,4 +1,5 @@
 using System;
+using Strategy;
 using UnityEngine;
 
 namespace Managers
@@ -36,7 +37,9 @@ namespace Managers
         public event Action<float> OnStaminaChange;
 
         public event Action<string> OnUIPanelUpdate;
+        public event Action<ChargeStatus> OnChargeChange;
 
+        public event Action<bool> OnStartConsumingBattery;
 
         // Método de activación del evento
         public void InventoryChange(int currentItems, int maxItems)
@@ -53,6 +56,16 @@ namespace Managers
         public void UIPanelUpdate(string message)
         {
             if (OnUIPanelUpdate != null) OnUIPanelUpdate(message);
+        }
+
+        public void ChargeChange(ChargeStatus currentStatus)
+        {
+            if (OnChargeChange != null) OnChargeChange(currentStatus);
+        }
+
+        public void StartConsumingBattery(bool consumeBattery)
+        {
+            if (OnStartConsumingBattery != null) OnStartConsumingBattery(consumeBattery);
         }
 
         #endregion

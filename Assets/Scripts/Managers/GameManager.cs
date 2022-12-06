@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,6 +23,7 @@ namespace Managers
             SetSpawnPoints();
             StartCoroutine(MonsterLifecycle());
             EventManager.instance.OnGameOver += OnGameOver;
+            EventManager.instance.OnStartConsumingBattery += OnStartConsumingBattery;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -83,6 +85,12 @@ namespace Managers
             {
                 SceneManager.LoadScene("Game Over");
             }
+        }
+
+        public void OnStartConsumingBattery(bool consumeBattery)
+        {
+            Flashlight flashlight = GameObject.FindWithTag("Character").GetComponent<Flashlight>();
+            flashlight.setIsChargeable(consumeBattery);
         }
     }
 }

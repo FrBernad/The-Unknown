@@ -28,6 +28,7 @@ namespace Entities
         private bool _hasFlashlight;
         private bool _contactWithFlashlight;
         private bool _contactWithNote;
+        private bool _contactWithBattery;
 
         // Movement properties
         [SerializeField] private Transform groundCheck;
@@ -37,6 +38,7 @@ namespace Entities
         [SerializeField] private AudioSource interactionsAudioSource;
         [SerializeField] private AudioClip pickupNoteAudioClip;
         [SerializeField] private AudioClip pickupFlashlightAudioClip;
+        [SerializeField] private AudioClip pickupBatteryAudioClip;
 
         [SerializeField] private AudioSource walkingAudioSource;
         [SerializeField] private AudioSource sprintingAudioSource;
@@ -52,6 +54,7 @@ namespace Entities
         private CmdJump _cmdJump;
         private CmdPickUpFlashlight _cmdPickUpFlashlight;
         private CmdPickUpNote _cmdPickUpNote;
+        private CmdPickUpBattery _cmdPickUpBattery;
         private CmdRotation _cmdRotation;
         private CmdStartSprinting _cmdStartSprinting;
         private CmdStopSprinting _cmdStopSprinting;
@@ -99,6 +102,7 @@ namespace Entities
             UpdateMovementAudio();
             UpdateFlashlightState();
             UpdateNoteState();
+            UpdateBatteryState();
         }
 
 
@@ -141,6 +145,12 @@ namespace Entities
                         pickupFlashlightAudioClip);
                     _contactWithFlashlight = true;
                 }
+                else if (c.CompareTag("Battery"))
+                {
+                    var battery = c.GetComponent<Battery>();
+                    _cmdPickUpBattery = new CmdPickUpBattery(battery, interactionsAudioSource, pickupBatteryAudioClip);
+                    _contactWithBattery = true;
+                }
             }
             else
             {
@@ -155,6 +165,12 @@ namespace Entities
                     UpdateUIPanel(null);
                     _contactWithFlashlight = false;
                 }
+
+                if (_contactWithBattery)
+                {
+                    UpdateUIPanel(null);
+                    _contactWithBattery = false;
+                }
             }
         }
 
@@ -167,6 +183,17 @@ namespace Entities
             }
         }
 
+        private void UpdateBatteryState()
+        {
+            if (_contactWithBattery && Input.GetKeyDown(pickup))
+            {
+                EventQueueManager.instance.AddCommand(_cmdPickUpBattery);
+                CmdIncreaseCharge _cmdIncreaseCharge = new CmdIncreaseCharge(_flashlight);
+                EventQueueManager.instance.AddCommand(_cmdIncreaseCharge);
+                _contactWithBattery = false;
+            }
+        }
+
         private void UpdateFlashlightState()
         {
             if (!_hasFlashlight && _contactWithFlashlight && Input.GetKeyDown(pickup))
@@ -175,6 +202,7 @@ namespace Entities
                 _hasFlashlight = true;
                 _cmdSwitchFlashlight = new CmdSwitchFlashlight(_flashlight);
                 _contactWithFlashlight = false;
+                EventManager.instance.StartConsumingBattery(true);
             }
 
             if (_hasFlashlight && Input.GetKeyDown(switchFlashlight))
