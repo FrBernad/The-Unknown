@@ -138,5 +138,6 @@ pom.xml.tag
 
 Assets/*
 !Assets/Scripts
+!Assets/DiggerData
 !Assets/Scenes
 !Assets/Animations
