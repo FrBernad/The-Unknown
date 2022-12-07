@@ -17,21 +17,36 @@ namespace Entities
         [SerializeField] private float _radius = 3;
         [SerializeField] private float _offset = 90;
 
-        private float _currentTime;
+        [SerializeField] private float _targetMinDistance = 50;
+        [SerializeField] private float _targetMaxDistance = 100;
+
+        private RotationMode _rotationMode = RotationMode.Rotate;
 
         private void Update()
         {
-            TargetPlayer();
-            // NormalRotation();
+            switch (_rotationMode)
+            {
+                case RotationMode.Rotate:
+                case RotationMode.Target when !PlayerInRange():
+                    NormalRotation();
+                    break;
+                case RotationMode.Target:
+                    TargetPlayer();
+                    break;
+            }
         }
 
         private void NormalRotation()
         {
-            _spotLight.transform.Rotate(Vector3.up * Rad2Deg * (Time.deltaTime * _speed));
+            // SpotLight
+            _spotLight.transform.Rotate(Vector3.up * (Rad2Deg * (Time.deltaTime * _speed)));
+            var spotlightLocalRotation = _spotLight.transform.localRotation;
+            _spotLight.transform.localRotation = new Quaternion(0, spotlightLocalRotation.y, 0, spotlightLocalRotation.w);
 
+            // PointLight
             var pointLightPosition = _pointLight.transform.localPosition;
 
-            var rotation = _spotLight.transform.localRotation.eulerAngles.y - _offset;
+            var rotation = spotlightLocalRotation.eulerAngles.y - _offset;
             var x = Cos(-Deg2Rad * rotation) * _radius;
             var y = pointLightPosition.y;
             var z = Sin(-Deg2Rad * rotation) * _radius;
@@ -53,6 +68,23 @@ namespace Entities
             var y = pointLightPosition.y;
             var z = Sin(-Deg2Rad * rotation) * _radius;
             _pointLight.transform.localPosition = new Vector3(x, y, z);
+        }
+
+        private bool PlayerInRange()
+        {
+            var distance = (_character.transform.position - _spotLight.transform.position).magnitude;
+            return distance > _targetMinDistance && distance < _targetMaxDistance;
+        }
+
+        public void SetRotationMode(RotationMode rotationMode)
+        {
+            _rotationMode = rotationMode;
+        }
+
+        public enum RotationMode
+        {
+            Rotate,
+            Target
         }
     }
 }

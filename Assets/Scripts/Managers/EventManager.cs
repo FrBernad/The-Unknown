@@ -41,6 +41,7 @@ namespace Managers
         public event Action<ChargeStatus> OnChargeChange;
 
         public event Action<bool> OnStartConsumingBattery;
+        public event Action<Lighthouse.RotationMode> OnChangeLighthouseRotationMode;
 
         // Método de activación del evento
         public void InventoryChange(int currentItems, int maxItems)
@@ -72,6 +73,11 @@ namespace Managers
         public void ChangeAmbience(Ambience ambience)
         {
             if (OnChangeAmbience != null) OnChangeAmbience(ambience);
+        }
+
+        public void ChangeLighthouseRotationMode(Lighthouse.RotationMode rotationMode)
+        {
+            if (OnChangeLighthouseRotationMode != null) OnChangeLighthouseRotationMode(rotationMode);
         }
 
         #endregion

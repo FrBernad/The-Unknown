@@ -25,6 +25,8 @@ namespace Managers
         [SerializeField] private AudioClip _screamerAudioClip;
         [SerializeField] private GameObject _screamerObject;
 
+        [SerializeField] private Lighthouse _lighthouse;
+
         private void Start()
         {
             SetSpawnPoints();
@@ -32,6 +34,7 @@ namespace Managers
             EventManager.instance.OnGameOver += OnGameOver;
             EventManager.instance.OnStartConsumingBattery += OnStartConsumingBattery;
             EventManager.instance.OnChangeAmbience += OnChangeAmbience;
+            EventManager.instance.OnChangeLighthouseRotationMode += OnChangeLighthouseRotationMode;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -114,6 +117,11 @@ namespace Managers
                     _ambienceAudioSource.Play();
                     break;
             }
+        }
+
+        private void OnChangeLighthouseRotationMode(Lighthouse.RotationMode rotationMode)
+        {
+            _lighthouse.SetRotationMode(rotationMode);
         }
     }
 }
