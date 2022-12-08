@@ -1,9 +1,9 @@
 using Entities;
 using UnityEngine;
 
-namespace Entities.Note
+namespace Utils
 {
-    public class NoteOutline : MonoBehaviour
+    public class ObjectOutline : MonoBehaviour
     {
         private SphereCollider _collider;
         private Outline _outline;
