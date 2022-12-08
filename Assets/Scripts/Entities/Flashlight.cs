@@ -13,8 +13,8 @@ namespace Entities
         [SerializeField] private float _currentCharge;
         private float _maxCharge;
         [SerializeField] private bool _isChargeable;
-        [SerializeField] private float _decreaseChargeValue = 0.001f;
-        [SerializeField] private float _increaseChargeValue = 25f;
+        [SerializeField] private float _decreaseChargeValue;
+        [SerializeField] private float _increaseChargeValue;
 
 
         private void Start()
@@ -25,6 +25,8 @@ namespace Entities
             _audioSource = gameObject.GetComponent<AudioSource>();
             _maxCharge = 100;
             _currentCharge = _maxCharge;
+            _decreaseChargeValue = 3;
+            _increaseChargeValue = 25;
         }
 
 
@@ -32,21 +34,27 @@ namespace Entities
         {
             UpdateUIPanel(null);
             Destroy(gameObject);
-            UpdateChargeUI();
+            ChargeStatus currentChargeStatus = GetChargeStatus();
+            UpdateChargeUI(currentChargeStatus);
         }
 
         public void Switch()
         {
             if (HasCharge())
             {
-                _isOn = !_isOn;
-                _light.SetActive(_isOn);
+                SwitchLight();
             }
 
             if (_isOn) StartConsumingBattery();
             else StopConsumingBattery();
 
             _audioSource.Play();
+        }
+
+        private void SwitchLight()
+        {
+            _isOn = !_isOn;
+            _light.SetActive(_isOn);
         }
 
         private void UpdateUIPanel(string message)
@@ -60,11 +68,13 @@ namespace Entities
             _currentCharge -= _decreaseChargeValue;
             if (_currentCharge < 0)
             {
+                SwitchLight();
                 _currentCharge = 0;
                 StopConsumingBattery();
             }
 
-            UpdateChargeUI();
+            ChargeStatus currentChargeStatus = GetChargeStatus();
+            UpdateChargeUI(currentChargeStatus);
         }
 
         public void IncreaseCharge()
@@ -73,11 +83,18 @@ namespace Entities
 
             if (_currentCharge > _maxCharge) _currentCharge = _maxCharge;
 
-            UpdateChargeUI();
+            ChargeStatus currentChargeStatus = GetChargeStatus();
+
+            UpdateChargeUI(currentChargeStatus);
         }
 
 
-        public void UpdateChargeUI()
+        public void UpdateChargeUI(ChargeStatus currentChargeStatus)
+        {
+            EventManager.instance.ChargeChange(currentChargeStatus);
+        }
+
+        private ChargeStatus GetChargeStatus()
         {
             ChargeStatus status;
             if (_currentCharge <= 100 && _currentCharge > 75) status = ChargeStatus.FullCharge;
@@ -86,7 +103,7 @@ namespace Entities
             else if (_currentCharge <= 25 && _currentCharge > 0) status = ChargeStatus.QuarterCharge;
             else status = ChargeStatus.Empty;
 
-            EventManager.instance.ChargeChange(status);
+            return status;
         }
 
         private bool HasCharge()

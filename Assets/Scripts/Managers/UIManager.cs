@@ -13,7 +13,7 @@ namespace Managers
         [SerializeField] private GameObject _messagePanel;
         [SerializeField] private Text _panelText;
         [SerializeField] private GameObject _flashlightBatteryGameObject;
-        [SerializeField] private Image _flashlightBatteryImage;
+        private Image _flashlightBatteryImage;
 
         private ChargeStatus _currentChargeStatus;
         [SerializeField] private Sprite _emptyCharge;
@@ -35,8 +35,8 @@ namespace Managers
             EventManager.instance.OnStaminaChange += OnStaminaChange;
             EventManager.instance.OnUIPanelUpdate += OnUIPanelUpdate;
             EventManager.instance.OnChargeChange += OnChargeChange;
-            _flashlightBatteryGameObject.SetActive(false);
             _flashlightBatteryImage = _flashlightBatteryGameObject.GetComponentInChildren<Image>(true);
+            _flashlightBatteryGameObject.SetActive(false);
         }
 
         private void OnInventoryChange(int currentItems, int maxItems)
@@ -52,10 +52,11 @@ namespace Managers
         private void OnChargeChange(ChargeStatus chargeStatus)
         {
             if (!_flashlightBatteryImage.IsActive())
-                _flashlightBatteryImage.gameObject.SetActive(true);
+                _flashlightBatteryGameObject.SetActive(true);
 
             if (chargeStatus != _currentChargeStatus)
             {
+                _currentChargeStatus = chargeStatus;
                 _flashlightBatteryImage.sprite = GetChargeStatusSprite(chargeStatus);
             }
         }

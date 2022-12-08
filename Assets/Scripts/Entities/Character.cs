@@ -202,7 +202,6 @@ namespace Entities
                 _hasFlashlight = true;
                 _cmdSwitchFlashlight = new CmdSwitchFlashlight(_flashlight);
                 _contactWithFlashlight = false;
-                EventManager.instance.StartConsumingBattery(true);
             }
 
             if (_hasFlashlight && Input.GetKeyDown(switchFlashlight))

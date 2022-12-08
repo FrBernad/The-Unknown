@@ -32,7 +32,7 @@ namespace Managers
             SetSpawnPoints();
             StartCoroutine(MonsterLifecycle());
             EventManager.instance.OnGameOver += OnGameOver;
-            EventManager.instance.OnStartConsumingBattery += OnStartConsumingBattery;
+            EventManager.instance.OnSetFlashlightChargeableMode += OnSetFlashlightChargeableMode;
             EventManager.instance.OnChangeAmbience += OnChangeAmbience;
             EventManager.instance.OnChangeLighthouseRotationMode += OnChangeLighthouseRotationMode;
             StartCoroutine(DisplayInitialMessage());
@@ -98,7 +98,7 @@ namespace Managers
             }
         }
 
-        private void OnStartConsumingBattery(bool consumeBattery)
+        private void OnSetFlashlightChargeableMode(bool consumeBattery)
         {
             Flashlight flashlight = GameObject.FindWithTag("Player").GetComponentInChildren<Flashlight>(true);
             flashlight.SetIsChargeable(consumeBattery);

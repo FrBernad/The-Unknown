@@ -40,7 +40,7 @@ namespace Managers
         public event Action<string> OnUIPanelUpdate;
         public event Action<ChargeStatus> OnChargeChange;
 
-        public event Action<bool> OnStartConsumingBattery;
+        public event Action<bool> OnSetFlashlightChargeableMode;
         public event Action<Lighthouse.RotationMode> OnChangeLighthouseRotationMode;
 
         // Método de activación del evento
@@ -65,9 +65,9 @@ namespace Managers
             if (OnChargeChange != null) OnChargeChange(currentStatus);
         }
 
-        public void StartConsumingBattery(bool consumeBattery)
+        public void SetFlashlightChargeableMode(bool consumeBattery)
         {
-            if (OnStartConsumingBattery != null) OnStartConsumingBattery(consumeBattery);
+            if (OnSetFlashlightChargeableMode != null) OnSetFlashlightChargeableMode(consumeBattery);
         }
 
         public void ChangeAmbience(Ambience ambience)
