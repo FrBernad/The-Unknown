@@ -12,7 +12,7 @@ namespace Entities
         private bool _isOn = true;
         [SerializeField] private float _currentCharge;
         private float _maxCharge;
-        [SerializeField] private bool _isChargeable;
+        [SerializeField] private bool _isChargeable = false;
         [SerializeField] private float _decreaseChargeValue;
         [SerializeField] private float _increaseChargeValue;
 
@@ -20,13 +20,16 @@ namespace Entities
         private void Start()
         {
             _light = transform.GetChild(0).gameObject;
-            _isChargeable = false;
             _light.SetActive(_isOn);
             _audioSource = gameObject.GetComponent<AudioSource>();
             _maxCharge = 100;
             _currentCharge = _maxCharge;
             _decreaseChargeValue = 3;
             _increaseChargeValue = 25;
+            if (_isChargeable) //significa que ocurrio el evento para que se descargue antes que la agarre
+            {
+                StartConsumingBattery();
+            }
         }
 
 
@@ -114,7 +117,8 @@ namespace Entities
         public void SetIsChargeable(bool isChargeable)
         {
             _isChargeable = isChargeable;
-            if (_isOn)
+            if (gameObject.activeSelf &&
+                _isOn) //active.self es true cuando la linterna fue agarrada y además verifico que esté encendida.
             {
                 StartConsumingBattery();
             }
