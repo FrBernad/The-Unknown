@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,14 +28,23 @@ namespace Managers
 
         [SerializeField] private Lighthouse _lighthouse;
 
+        [SerializeField] private List<Transform> _batteriesSpawnPoints;
+        [SerializeField] private int _batteriesRespawnTime = 20;
+        [SerializeField] private int _batteriesLifeTime = 30;
+        [SerializeField] private int _batteriesQuantity = 6;
+        [SerializeField] private GameObject _battery;
+
+
         private void Start()
         {
             SetSpawnPoints();
+            SetSpawnBatteryPoints();
             StartCoroutine(MonsterLifecycle());
             EventManager.instance.OnGameOver += OnGameOver;
             EventManager.instance.OnSetFlashlightChargeableMode += OnSetFlashlightChargeableMode;
             EventManager.instance.OnChangeAmbience += OnChangeAmbience;
             EventManager.instance.OnChangeLighthouseRotationMode += OnChangeLighthouseRotationMode;
+            EventManager.instance.OnSpawnBatteries += OnSpawnBatteries;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -83,6 +93,64 @@ namespace Managers
             return monster;
         }
 
+        private IEnumerator<WaitForSeconds> BatteriesLifecycle()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(_batteriesRespawnTime);
+
+                List<GameObject> batteries = SpawnBatteries();
+
+                yield return new WaitForSeconds(_batteriesLifeTime);
+
+                foreach (var battery in batteries)
+                {
+                    Destroy(battery);
+                }
+            }
+        }
+
+        private void SetSpawnBatteryPoints()
+        {
+            var spawnPoints = GameObject.Find("BatteriesSpawnPoints");
+            var totalSpawnPoints = spawnPoints.transform.childCount;
+
+            _batteriesSpawnPoints = new List<Transform>(totalSpawnPoints);
+
+            for (var i = 0; i < totalSpawnPoints; i++) _batteriesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
+        }
+
+        private List<GameObject> SpawnBatteries()
+        {
+            List<GameObject> batteries = new List<GameObject>();
+            List<int> indexs = Enumerable.Range(0, _batteriesSpawnPoints.Count).ToList();
+
+            for (int i = 0; i < _batteriesQuantity; i++)
+            {
+                var battery = Instantiate(_battery);
+                int index = SetSpawnBatteryPosition(battery, indexs);
+                indexs.RemoveAt(index);
+                batteries.Add(battery);
+            }
+
+            return batteries;
+        }
+
+        private int SetSpawnBatteryPosition(GameObject obj, List<int> indexs)
+        {
+            var index = Random.Range(0, indexs.Count);
+            var spawnPoint = indexs[index];
+            obj.transform.position = _batteriesSpawnPoints[spawnPoint].position;
+            return index;
+        }
+
+
+        private void OnSpawnBatteries()
+        {
+            StartCoroutine(BatteriesLifecycle());
+        }
+
+
         private void OnGameOver(bool isVictory)
         {
             GlobalData.instance.SetVictoryField(isVictory);
@@ -97,6 +165,7 @@ namespace Managers
                 SceneManager.LoadScene("Game Over");
             }
         }
+
 
         private void OnSetFlashlightChargeableMode(bool consumeBattery)
         {

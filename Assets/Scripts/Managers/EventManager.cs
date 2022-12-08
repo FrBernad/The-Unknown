@@ -41,6 +41,7 @@ namespace Managers
         public event Action<ChargeStatus> OnChargeChange;
 
         public event Action<bool> OnSetFlashlightChargeableMode;
+        public event Action OnSpawnBatteries;
         public event Action<Lighthouse.RotationMode> OnChangeLighthouseRotationMode;
 
         // Método de activación del evento
@@ -68,6 +69,11 @@ namespace Managers
         public void SetFlashlightChargeableMode(bool consumeBattery)
         {
             if (OnSetFlashlightChargeableMode != null) OnSetFlashlightChargeableMode(consumeBattery);
+        }
+
+        public void SpawnBatteries()
+        {
+            if (OnSpawnBatteries != null) OnSpawnBatteries();
         }
 
         public void ChangeAmbience(Ambience ambience)
