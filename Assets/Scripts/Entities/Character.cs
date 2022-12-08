@@ -119,7 +119,6 @@ namespace Entities
         {
             if (collision.gameObject.CompareTag("Boat"))
             {
-                EventManager.instance.SetFlashlightChargeableMode(true);
                 UpdateUIPanel(null);
             }
         }
