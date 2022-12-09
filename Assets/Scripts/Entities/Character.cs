@@ -147,7 +147,7 @@ namespace Entities
                 }
                 else if (c.CompareTag("Battery"))
                 {
-                    var battery = c.GetComponent<Battery>();
+                    var battery = c.GetComponent<Battery.Battery>();
                     _cmdPickUpBattery = new CmdPickUpBattery(battery, interactionsAudioSource, pickupBatteryAudioClip);
                     _contactWithBattery = true;
                 }
@@ -188,8 +188,8 @@ namespace Entities
             if (_contactWithBattery && Input.GetKeyDown(pickup))
             {
                 EventQueueManager.instance.AddCommand(_cmdPickUpBattery);
-                CmdIncreaseCharge _cmdIncreaseCharge = new CmdIncreaseCharge(_flashlight);
-                EventQueueManager.instance.AddCommand(_cmdIncreaseCharge);
+                CmdIncreaseCharge cmdIncreaseCharge = new CmdIncreaseCharge(_flashlight);
+                EventQueueManager.instance.AddCommand(cmdIncreaseCharge);
                 _contactWithBattery = false;
             }
         }

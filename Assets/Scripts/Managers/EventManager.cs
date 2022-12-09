@@ -40,14 +40,10 @@ namespace Managers
         public event Action<string> OnUIPanelUpdate;
         public event Action<ChargeStatus> OnChargeChange;
 
-        public event Action<bool> OnSetFlashlightChargeableMode;
-        public event Action OnSpawnBatteries;
         public event Action<Lighthouse.RotationMode> OnChangeLighthouseRotationMode;
 
-        // Método de activación del evento
         public void InventoryChange(int currentItems, int maxItems)
         {
-            //Si hay alguien suscripto
             if (OnInventoryChange != null) OnInventoryChange(currentItems, maxItems);
         }
 
@@ -66,15 +62,6 @@ namespace Managers
             if (OnChargeChange != null) OnChargeChange(currentStatus);
         }
 
-        public void SetFlashlightChargeableMode(bool consumeBattery)
-        {
-            if (OnSetFlashlightChargeableMode != null) OnSetFlashlightChargeableMode(consumeBattery);
-        }
-
-        public void SpawnBatteries()
-        {
-            if (OnSpawnBatteries != null) OnSpawnBatteries();
-        }
 
         public void ChangeAmbience(Ambience ambience)
         {

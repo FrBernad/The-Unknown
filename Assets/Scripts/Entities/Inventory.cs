@@ -11,14 +11,14 @@ namespace Entities
 
         private void Start()
         {
-            UI_Inventory_Updater();
+            NotifyInventoryUpdate();
         }
 
         public void StoreItem()
         {
             CurrentItems++;
             //Llamo al método que dispara el evento
-            UI_Inventory_Updater();
+            NotifyInventoryUpdate();
         }
 
         public bool IsFull()
@@ -26,7 +26,7 @@ namespace Entities
             return CurrentItems >= MaxItems;
         }
 
-        private void UI_Inventory_Updater()
+        private void NotifyInventoryUpdate()
         {
             EventManager.instance.InventoryChange(CurrentItems, MaxItems);
         }

@@ -11,10 +11,11 @@ namespace Entities
         private GameObject _light;
         private bool _isOn = true;
         [SerializeField] private float _currentCharge;
-        private float _maxCharge;
-        [SerializeField] private bool _isChargeable = false;
-        [SerializeField] private float _decreaseChargeValue;
-        [SerializeField] private float _increaseChargeValue;
+        private float _maxCharge = 100;
+        [SerializeField] private bool _isChargeable;
+        [SerializeField] private float _decreaseChargeValue = 5;
+        [SerializeField] private float _increaseChargeValue = 25;
+        [SerializeField] private int _decreaseChargeDelay = 3;
 
 
         private void Start()
@@ -22,11 +23,9 @@ namespace Entities
             _light = transform.GetChild(0).gameObject;
             _light.SetActive(_isOn);
             _audioSource = gameObject.GetComponent<AudioSource>();
-            _maxCharge = 100;
             _currentCharge = _maxCharge;
-            _decreaseChargeValue = 3;
-            _increaseChargeValue = 25;
-            if (_isChargeable) //significa que ocurrio el evento para que se descargue antes que la agarre
+            //significa que ocurrio el evento para que se descargue antes que la agarre
+            if (_isChargeable)
             {
                 StartConsumingBattery();
             }
@@ -117,8 +116,8 @@ namespace Entities
         public void SetIsChargeable(bool isChargeable)
         {
             _isChargeable = isChargeable;
-            if (gameObject.activeSelf &&
-                _isOn) //active.self es true cuando la linterna fue agarrada y además verifico que esté encendida.
+            //active.self es true cuando la linterna fue agarrada y además verifico que esté encendida.
+            if (gameObject.activeSelf && _isOn)
             {
                 StartConsumingBattery();
             }
@@ -126,7 +125,7 @@ namespace Entities
 
         public void StartConsumingBattery()
         {
-            InvokeRepeating("DecreaseCharge", 0, 1);
+            InvokeRepeating("DecreaseCharge", 0, _decreaseChargeDelay);
         }
 
         public void StopConsumingBattery()

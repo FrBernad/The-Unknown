@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entities;
+using Entities.Battery;
+using Entities.Cave;
+using Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static Entities.Ambience;
@@ -11,10 +14,11 @@ namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private GameObject _monster;
+        [SerializeField] private Monster _monster;
         [SerializeField] private List<Transform> _entitiesSpawnPoints;
         [SerializeField] private AudioSource _globalAudioSource;
-        [SerializeField] private AudioClip _monsterSpawnClip;
+        [SerializeField] private AudioClip _monsterSpawnAudioClip;
+        [SerializeField] private AudioClip _caveOpenAudioClip;
 
         [SerializeField] private AudioSource _ambienceAudioSource;
         [SerializeField] private AudioClip _forestAmbienceAudioClip;
@@ -26,25 +30,25 @@ namespace Managers
         [SerializeField] private AudioClip _screamerAudioClip;
         [SerializeField] private GameObject _screamerObject;
 
+        [SerializeField] private BatteriesSpawner _batteriesSpawner;
         [SerializeField] private Lighthouse _lighthouse;
+        [SerializeField] private Cave _cave;
+        [SerializeField] private int _notesToOpenCave;
 
-        [SerializeField] private List<Transform> _batteriesSpawnPoints;
+        [SerializeField] private int _notesToStartDischarge = 3;
         [SerializeField] private int _batteriesRespawnTime = 20;
         [SerializeField] private int _batteriesLifeTime = 30;
-        [SerializeField] private int _batteriesQuantity = 6;
-        [SerializeField] private GameObject _battery;
 
+        private MonsterFactory _monsterFactory = new MonsterFactory();
 
         private void Start()
         {
             SetSpawnPoints();
-            SetSpawnBatteryPoints();
             StartCoroutine(MonsterLifecycle());
             EventManager.instance.OnGameOver += OnGameOver;
-            EventManager.instance.OnSetFlashlightChargeableMode += OnSetFlashlightChargeableMode;
+            EventManager.instance.OnInventoryChange += OnInventoryChange;
             EventManager.instance.OnChangeAmbience += OnChangeAmbience;
             EventManager.instance.OnChangeLighthouseRotationMode += OnChangeLighthouseRotationMode;
-            EventManager.instance.OnSpawnBatteries += OnSpawnBatteries;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -79,75 +83,18 @@ namespace Managers
             for (var i = 0; i < totalSpawnPoints; i++) _entitiesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
         }
 
-        private void SetSpawnPosition(GameObject obj)
+        private void SetSpawnPosition(Component obj)
         {
             var spawnPoint = Random.Range(0, _entitiesSpawnPoints.Count);
             obj.transform.position = _entitiesSpawnPoints[spawnPoint].position;
         }
 
-        private GameObject SpawnMonster()
+        private Monster SpawnMonster()
         {
-            var monster = Instantiate(_monster);
+            var monster = _monsterFactory.Create(_monster);
             SetSpawnPosition(_monster);
-            _globalAudioSource.PlayOneShot(_monsterSpawnClip);
+            _globalAudioSource.PlayOneShot(_monsterSpawnAudioClip);
             return monster;
-        }
-
-        private IEnumerator<WaitForSeconds> BatteriesLifecycle()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(_batteriesRespawnTime);
-
-                List<GameObject> batteries = SpawnBatteries();
-
-                yield return new WaitForSeconds(_batteriesLifeTime);
-
-                foreach (var battery in batteries)
-                {
-                    Destroy(battery);
-                }
-            }
-        }
-
-        private void SetSpawnBatteryPoints()
-        {
-            var spawnPoints = GameObject.Find("BatteriesSpawnPoints");
-            var totalSpawnPoints = spawnPoints.transform.childCount;
-
-            _batteriesSpawnPoints = new List<Transform>(totalSpawnPoints);
-
-            for (var i = 0; i < totalSpawnPoints; i++) _batteriesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
-        }
-
-        private List<GameObject> SpawnBatteries()
-        {
-            List<GameObject> batteries = new List<GameObject>();
-            List<int> indexs = Enumerable.Range(0, _batteriesSpawnPoints.Count).ToList();
-
-            for (int i = 0; i < _batteriesQuantity; i++)
-            {
-                var battery = Instantiate(_battery);
-                int index = SetSpawnBatteryPosition(battery, indexs);
-                indexs.RemoveAt(index);
-                batteries.Add(battery);
-            }
-
-            return batteries;
-        }
-
-        private int SetSpawnBatteryPosition(GameObject obj, List<int> indexs)
-        {
-            var index = Random.Range(0, indexs.Count);
-            var spawnPoint = indexs[index];
-            obj.transform.position = _batteriesSpawnPoints[spawnPoint].position;
-            return index;
-        }
-
-
-        private void OnSpawnBatteries()
-        {
-            StartCoroutine(BatteriesLifecycle());
         }
 
 
@@ -167,11 +114,44 @@ namespace Managers
         }
 
 
-        private void OnSetFlashlightChargeableMode(bool consumeBattery)
+        private void OnInventoryChange(int currentItems, int maxItems)
         {
-            Flashlight flashlight = GameObject.FindWithTag("Player").GetComponentInChildren<Flashlight>(true);
-            flashlight.SetIsChargeable(consumeBattery);
+            CheckCaveState(currentItems);
+            CheckBatteriesState(currentItems);
         }
+
+
+        private void CheckCaveState(int currentItems)
+        {
+            if (currentItems == _notesToOpenCave && !_cave.isOpen)
+            {
+                _globalAudioSource.PlayOneShot(_caveOpenAudioClip);
+                _cave.Open();
+            }
+        }
+
+        private void CheckBatteriesState(int currentItems)
+        {
+            if (currentItems == _notesToStartDischarge)
+            {
+                Flashlight flashlight = GameObject.FindWithTag("Player").GetComponentInChildren<Flashlight>(true);
+                flashlight.SetIsChargeable(true);
+                StartCoroutine(BatteriesLifecycle());
+            }
+        }
+
+        private IEnumerator<WaitForSeconds> BatteriesLifecycle()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(_batteriesRespawnTime);
+
+                _batteriesSpawner.ActivateRandomBatteries();
+
+                yield return new WaitForSeconds(_batteriesLifeTime);
+            }
+        }
+
 
         private void OnChangeAmbience(Ambience ambience)
         {
@@ -181,7 +161,7 @@ namespace Managers
                     _ambienceAudioSource.clip = _forestAmbienceAudioClip;
                     _ambienceAudioSource.Play();
                     break;
-                case Cave:
+                case Ambience.Cave:
                     _ambienceAudioSource.clip = _caveAmbienceAudioClip;
                     _ambienceAudioSource.Play();
                     break;
