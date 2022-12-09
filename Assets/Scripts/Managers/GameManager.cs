@@ -70,7 +70,7 @@ namespace Managers
 
                 yield return new WaitForSeconds(_monsterLifeTime);
 
-                Destroy(monster);
+                Destroy(monster.gameObject);
             }
         }
 
