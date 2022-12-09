@@ -15,7 +15,7 @@ namespace Entities
         [SerializeField] private bool _isChargeable;
         [SerializeField] private float _decreaseChargeValue = 5;
         [SerializeField] private float _increaseChargeValue = 25;
-        [SerializeField] private int _decreaseChargeDelay = 3;
+        [SerializeField] private int _decreaseChargeDelay = 9;
 
 
         private void Start()

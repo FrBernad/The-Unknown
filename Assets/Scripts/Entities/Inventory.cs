@@ -5,9 +5,10 @@ namespace Entities
 {
     public class Inventory : MonoBehaviour
     {
-        public int MaxItems => 8;
+        [SerializeField] private int _maxItems = 10;
+        public int GetMaxItems() => _maxItems;
 
-        public int CurrentItems { get; private set; }
+        [SerializeField] private int _currentItems;
 
         private void Start()
         {
@@ -16,19 +17,19 @@ namespace Entities
 
         public void StoreItem()
         {
-            CurrentItems++;
+            _currentItems++;
             //Llamo al método que dispara el evento
             NotifyInventoryUpdate();
         }
 
         public bool IsFull()
         {
-            return CurrentItems >= MaxItems;
+            return _currentItems >= _maxItems;
         }
 
         private void NotifyInventoryUpdate()
         {
-            EventManager.instance.InventoryChange(CurrentItems, MaxItems);
+            EventManager.instance.InventoryChange(_currentItems, _maxItems);
         }
     }
 }

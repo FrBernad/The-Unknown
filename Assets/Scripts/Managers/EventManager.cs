@@ -33,14 +33,11 @@ namespace Managers
 
         #region UI_EVENTS
 
-        //Evento
         public event Action<int, int> OnInventoryChange;
         public event Action<float> OnStaminaChange;
         public event Action<Ambience> OnChangeAmbience;
         public event Action<string> OnUIPanelUpdate;
         public event Action<ChargeStatus> OnChargeChange;
-
-        public event Action<Lighthouse.RotationMode> OnChangeLighthouseRotationMode;
 
         public void InventoryChange(int currentItems, int maxItems)
         {
@@ -66,11 +63,6 @@ namespace Managers
         public void ChangeAmbience(Ambience ambience)
         {
             if (OnChangeAmbience != null) OnChangeAmbience(ambience);
-        }
-
-        public void ChangeLighthouseRotationMode(Lighthouse.RotationMode rotationMode)
-        {
-            if (OnChangeLighthouseRotationMode != null) OnChangeLighthouseRotationMode(rotationMode);
         }
 
         #endregion

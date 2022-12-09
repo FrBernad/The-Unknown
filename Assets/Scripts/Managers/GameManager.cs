@@ -30,12 +30,14 @@ namespace Managers
         [SerializeField] private AudioClip _screamerAudioClip;
         [SerializeField] private GameObject _screamerObject;
 
-        [SerializeField] private BatteriesSpawner _batteriesSpawner;
         [SerializeField] private Lighthouse _lighthouse;
-        [SerializeField] private Cave _cave;
-        [SerializeField] private int _notesToOpenCave;
+        [SerializeField] private int _notesToChangeLighthouseMode = 7;
 
-        [SerializeField] private int _notesToStartDischarge = 3;
+        [SerializeField] private Cave _cave;
+        [SerializeField] private int _notesToOpenCave = 8;
+
+        [SerializeField] private BatteriesSpawner _batteriesSpawner;
+        [SerializeField] private int _notesToStartDischarge = 1;
         [SerializeField] private int _batteriesRespawnTime = 20;
         [SerializeField] private int _batteriesLifeTime = 30;
 
@@ -48,7 +50,6 @@ namespace Managers
             EventManager.instance.OnGameOver += OnGameOver;
             EventManager.instance.OnInventoryChange += OnInventoryChange;
             EventManager.instance.OnChangeAmbience += OnChangeAmbience;
-            EventManager.instance.OnChangeLighthouseRotationMode += OnChangeLighthouseRotationMode;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -118,6 +119,7 @@ namespace Managers
         {
             CheckCaveState(currentItems);
             CheckBatteriesState(currentItems);
+            CheckLighthouseState(currentItems);
         }
 
 
@@ -152,6 +154,13 @@ namespace Managers
             }
         }
 
+        private void CheckLighthouseState(int currentItems)
+        {
+            if (currentItems == _notesToChangeLighthouseMode)
+            {
+                _lighthouse.SetRotationMode(Lighthouse.RotationMode.Target);
+            }
+        }
 
         private void OnChangeAmbience(Ambience ambience)
         {
@@ -166,11 +175,6 @@ namespace Managers
                     _ambienceAudioSource.Play();
                     break;
             }
-        }
-
-        private void OnChangeLighthouseRotationMode(Lighthouse.RotationMode rotationMode)
-        {
-            _lighthouse.SetRotationMode(rotationMode);
         }
     }
 }

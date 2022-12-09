@@ -24,7 +24,7 @@ namespace Entities
 
         // Interactions
         [SerializeField] private LayerMask pickableLayer;
-        [SerializeField] private float pickupDistance = 2;
+        [SerializeField] private float pickupDistance = 4;
         private bool _hasFlashlight;
         private bool _contactWithFlashlight;
         private bool _contactWithNote;

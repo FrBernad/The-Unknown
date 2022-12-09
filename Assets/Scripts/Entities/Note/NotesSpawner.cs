@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Entities.Note
 {
@@ -10,8 +12,10 @@ namespace Entities.Note
             { "Lighthouse", 1 },
             { "House", 1 },
             { "BackLeft", 1 },
-            { "Center", 3 },
-            { "Right", 2 }
+            { "Center", 2 },
+            { "Cave", 2 },
+            { "Mountain", 2 },
+            { "Right", 1 }
         };
 
         private readonly Dictionary<string, List<GameObject>> _notesPerZone = new Dictionary<string, List<GameObject>>
@@ -20,11 +24,14 @@ namespace Entities.Note
             { "House", new List<GameObject>() },
             { "BackLeft", new List<GameObject>() },
             { "Center", new List<GameObject>() },
+            { "Cave", new List<GameObject>() },
+            { "Mountain", new List<GameObject>() },
             { "Right", new List<GameObject>() }
         };
 
         private void Awake()
         {
+            Assert.AreEqual(FindObjectOfType<Inventory>().GetMaxItems(), _notesAmountPerZone.Values.Sum());
             SetAndDeactivateNotes();
         }
 
