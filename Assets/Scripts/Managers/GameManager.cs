@@ -29,6 +29,7 @@ namespace Managers
 
         [SerializeField] private AudioClip _screamerAudioClip;
         [SerializeField] private GameObject _screamerObject;
+        [SerializeField] private GameObject _Hud;
 
         [SerializeField] private Lighthouse _lighthouse;
         [SerializeField] private int _notesToChangeLighthouseMode = 7;
@@ -105,6 +106,7 @@ namespace Managers
             if (!isVictory)
             {
                 _globalAudioSource.PlayOneShot(_screamerAudioClip);
+                _Hud.SetActive(false);
                 _screamerObject.SetActive(true);
                 StartCoroutine(Utils.Utils.DoDelayed(2.5f, () => SceneManager.LoadScene("Game Over")));
             }
