@@ -4,6 +4,8 @@ using System.Linq;
 using Entities;
 using Entities.Battery;
 using Entities.Cave;
+using Entities.Lighthouse;
+using Entities.Monster;
 using Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,17 +16,19 @@ namespace Managers
 {
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private Monster _monster;
-        [SerializeField] private List<Transform> _entitiesSpawnPoints;
         [SerializeField] private AudioSource _globalAudioSource;
-        [SerializeField] private AudioClip _monsterSpawnAudioClip;
         [SerializeField] private AudioClip _caveOpenAudioClip;
 
         [SerializeField] private AudioSource _ambienceAudioSource;
         [SerializeField] private AudioClip _forestAmbienceAudioClip;
         [SerializeField] private AudioClip _caveAmbienceAudioClip;
 
-        [SerializeField] private int _monsterRespawnTime = 10;
+        [SerializeField] private Character _character;
+
+        private Monster _currentMonster;
+        [SerializeField] private MonsterSpawner _monsterSpawner;
+        [SerializeField] private int _notesToSpawnMonster = 1;
+        [SerializeField] private int _monsterRespawnTime = 30;
         [SerializeField] private int _monsterLifeTime = 30;
 
         [SerializeField] private AudioClip _screamerAudioClip;
@@ -42,15 +46,13 @@ namespace Managers
         [SerializeField] private int _batteriesRespawnTime = 20;
         [SerializeField] private int _batteriesLifeTime = 30;
 
-        private MonsterFactory _monsterFactory = new MonsterFactory();
 
         private void Start()
         {
-            SetSpawnPoints();
-            StartCoroutine(MonsterLifecycle());
             EventManager.instance.OnGameOver += OnGameOver;
             EventManager.instance.OnInventoryChange += OnInventoryChange;
             EventManager.instance.OnChangeAmbience += OnChangeAmbience;
+            EventManager.instance.OnSlowPlayer += OnSlowPlayer;
             StartCoroutine(DisplayInitialMessage());
         }
 
@@ -67,42 +69,19 @@ namespace Managers
             {
                 yield return new WaitForSeconds(_monsterRespawnTime);
 
-                var monster = SpawnMonster();
+                _currentMonster = _monsterSpawner.SpawnMonster();
 
                 yield return new WaitForSeconds(_monsterLifeTime);
 
-                Destroy(monster.gameObject);
+                if (_currentMonster != null) Destroy(_currentMonster.gameObject);
             }
-        }
-
-        private void SetSpawnPoints()
-        {
-            var spawnPoints = GameObject.Find("EntitiesSpawnPoints");
-            var totalSpawnPoints = spawnPoints.transform.childCount;
-
-            _entitiesSpawnPoints = new List<Transform>(totalSpawnPoints);
-
-            for (var i = 0; i < totalSpawnPoints; i++) _entitiesSpawnPoints.Add(spawnPoints.transform.GetChild(i));
-        }
-
-        private void SetSpawnPosition(Component obj)
-        {
-            var spawnPoint = Random.Range(0, _entitiesSpawnPoints.Count);
-            obj.transform.position = _entitiesSpawnPoints[spawnPoint].position;
-        }
-
-        private Monster SpawnMonster()
-        {
-            var monster = _monsterFactory.Create(_monster);
-            SetSpawnPosition(_monster);
-            _globalAudioSource.PlayOneShot(_monsterSpawnAudioClip);
-            return monster;
         }
 
 
         private void OnGameOver(bool isVictory)
         {
             GlobalData.instance.SetVictoryField(isVictory);
+            if (_currentMonster != null) Destroy(_currentMonster.gameObject);
             if (!isVictory)
             {
                 _globalAudioSource.PlayOneShot(_screamerAudioClip);
@@ -119,11 +98,19 @@ namespace Managers
 
         private void OnInventoryChange(int currentItems, int maxItems)
         {
+            CheckMonsterSpawnState(currentItems);
             CheckCaveState(currentItems);
             CheckBatteriesState(currentItems);
             CheckLighthouseState(currentItems);
         }
 
+        private void CheckMonsterSpawnState(int currentItems)
+        {
+            if (currentItems == _notesToSpawnMonster)
+            {
+                StartCoroutine(MonsterLifecycle());
+            }
+        }
 
         private void CheckCaveState(int currentItems)
         {
@@ -177,6 +164,11 @@ namespace Managers
                     _ambienceAudioSource.Play();
                     break;
             }
+        }
+
+        private void OnSlowPlayer(bool shouldSlow)
+        {
+            _character.Slow(shouldSlow);
         }
     }
 }

@@ -38,6 +38,7 @@ namespace Managers
         public event Action<Ambience> OnChangeAmbience;
         public event Action<string> OnUIPanelUpdate;
         public event Action<ChargeStatus> OnChargeChange;
+        public event Action<bool> OnSlowPlayer;
 
         public void InventoryChange(int currentItems, int maxItems)
         {
@@ -63,6 +64,11 @@ namespace Managers
         public void ChangeAmbience(Ambience ambience)
         {
             if (OnChangeAmbience != null) OnChangeAmbience(ambience);
+        }
+
+        public void SlowPlayer(bool shouldSlow)
+        {
+            if (OnSlowPlayer != null) OnSlowPlayer(shouldSlow);
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace Flyweight
         public float MaxStamina => _characterStatValues.MaxStamina;
 
         public float Speed => _characterStatValues.Speed;
-
+        public float SlowedSpeed => _characterStatValues.SlowedSpeed;
         public float RotationSpeed => _characterStatValues.RotationSpeed;
 
         public float JumpHeight => _characterStatValues.JumpHeight;
@@ -23,6 +23,8 @@ namespace Flyweight
         public float MaxStamina;
 
         public float Speed;
+
+        public float SlowedSpeed;
 
         public float RotationSpeed;
 

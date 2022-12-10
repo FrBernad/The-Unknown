@@ -58,6 +58,8 @@ namespace Entities
         private CmdRotation _cmdRotation;
         private CmdStartSprinting _cmdStartSprinting;
         private CmdStopSprinting _cmdStopSprinting;
+        private CmdSlowOn _cmdSlowOn;
+        private CmdSlowOff _cmdSlowOff;
         private CmdSwitchFlashlight _cmdSwitchFlashlight;
         private CmdWin _cmdWin;
         private Flashlight _flashlight;
@@ -83,6 +85,8 @@ namespace Entities
             _cmdMoveRight = new CmdMovement(_movementController, Vector3.right);
             _cmdStartSprinting = new CmdStartSprinting(_lifeController, _movementController);
             _cmdStopSprinting = new CmdStopSprinting(_movementController);
+            _cmdSlowOn = new CmdSlowOn(_movementController);
+            _cmdSlowOff = new CmdSlowOff(_movementController);
             _cmdJump = new CmdJump(_movementController, Vector3.up);
             _cmdWin = new CmdWin();
 
@@ -268,6 +272,12 @@ namespace Entities
         private void UpdateUIPanel(string message)
         {
             EventManager.instance.UIPanelUpdate(message);
+        }
+
+        public void Slow(bool shouldSlow)
+        {
+            if (shouldSlow) EventQueueManager.instance.AddCommand(_cmdSlowOn);
+            else EventQueueManager.instance.AddCommand(_cmdSlowOff);
         }
     }
 }

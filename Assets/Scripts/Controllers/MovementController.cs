@@ -18,12 +18,16 @@ namespace Controllers
 
         public float RotationSpeed => GetComponent<Character>().CharacterStats.RotationSpeed;
         public float Speed => GetComponent<Character>().CharacterStats.Speed;
+        private float SlowedSpeed => GetComponent<Character>().CharacterStats.SlowedSpeed;
 
         public bool Sprinting { get; private set; }
+
+        private bool Slowed { get; set; }
 
         public void Move(Vector3 direction)
         {
             var realSpeed = Sprinting ? Speed * 2 : Speed;
+            if (Slowed) realSpeed = Sprinting ? SlowedSpeed * 2 : SlowedSpeed;
             transform.Translate(direction * (realSpeed * Time.deltaTime));
         }
 
@@ -41,6 +45,11 @@ namespace Controllers
         public void Sprint(bool isSprinting)
         {
             Sprinting = isSprinting;
+        }
+
+        public void Slow(bool isSlowed)
+        {
+            Slowed = isSlowed;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Entities.Monster;
 using UnityEngine;
 
 namespace Factory
