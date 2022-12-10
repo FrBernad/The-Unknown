@@ -264,7 +264,10 @@ namespace Entities
 
             if (Input.GetKeyUp(sprint)) EventQueueManager.instance.AddCommand(_cmdStopSprinting);
 
-            _isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+            var groundCheckPosition = groundCheck.position;
+            _isGrounded = Physics.CheckSphere(groundCheckPosition, groundDistance, groundMask,
+                QueryTriggerInteraction.Ignore);
+            Debug.DrawRay(groundCheckPosition, Vector3.down * groundDistance, color: Color.red);
 
             if (Input.GetKeyDown(jump) && _isGrounded) EventQueueManager.instance.AddMovementCommand(_cmdJump);
         }
