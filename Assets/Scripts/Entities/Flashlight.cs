@@ -47,8 +47,12 @@ namespace Entities
                 SwitchLight();
             }
 
-            if (_isOn) StartConsumingBattery();
-            else StopConsumingBattery();
+            if (_isChargeable)
+            {
+                if (_isOn) StartConsumingBattery();
+                else StopConsumingBattery();
+            }
+
 
             _audioSource.Play();
         }
