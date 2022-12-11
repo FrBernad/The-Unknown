@@ -1,3 +1,4 @@
+using System;
 using Entities;
 using UnityEngine;
 
@@ -15,6 +16,19 @@ namespace Utils
             var parentCollider = GetComponentInParent<BoxCollider>();
             _collider = GetComponent<SphereCollider>();
             Physics.IgnoreCollision(_collider, parentCollider);
+        }
+
+        private void OnEnable()
+        {
+            if (_outline)
+            {
+                _outline.OutlineColor = Color.black;
+            }
+        }
+
+        private void OnDisable()
+        {
+            OnEnable();
         }
 
         private void OnTriggerEnter(Collider collision)
